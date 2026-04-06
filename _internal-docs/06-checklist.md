@@ -25,7 +25,7 @@
 
 ## Architecture Setup
 
-* [ ] Create `GitProviderInterface`
+* [x] Create `GitProviderInterface`
 
 ```php
 interface GitProviderInterface {
@@ -38,12 +38,12 @@ interface GitProviderInterface {
 
 ## Provider Implementation (Start with GitHub)
 
-* [ ] Create `GitHubService`
+* [x] Create `GitHubService`
 
-  * [ ] Fetch repositories
-  * [ ] Fetch commits
-* [ ] Normalize API responses → internal format
-* [ ] Ensure provider-agnostic structure
+  * [x] Fetch repositories
+  * [x] Fetch commits
+* [x] Normalize API responses → internal format
+* [x] Ensure provider-agnostic structure
 
 ---
 
@@ -60,28 +60,28 @@ interface GitProviderInterface {
 
 * [ ] Create GitHub OAuth App
 * [ ] Add “Connect GitHub” button
-* [ ] Handle OAuth callback
-* [ ] Store access token securely
+* [x] Handle OAuth callback
+* [x] Store access token securely
 
 ---
 
 ## Git Accounts Table
 
-* [ ] Create `git_accounts` table
+* [x] Create `git_accounts` table
 
-  * [ ] user_id
-  * [ ] provider
-  * [ ] access_token
-  * [ ] refresh_token
-  * [ ] expiry
+  * [x] user_id
+  * [x] provider
+  * [x] access_token
+  * [x] refresh_token
+  * [x] expiry
 
 ---
 
 ## Integration Flow
 
-* [ ] User connects provider
-* [ ] Save tokens
-* [ ] Trigger initial sync
+* [x] User connects provider
+* [x] Save tokens
+* [x] Trigger initial sync
 
 ---
 
@@ -91,29 +91,29 @@ interface GitProviderInterface {
 
 ### Repositories
 
-* [ ] Create `repositories`
+* [x] Create `repositories`
 
-  * [ ] user_id
-  * [ ] provider
-  * [ ] external_id
-  * [ ] name
-  * [ ] full_name
-  * [ ] url
-  * [ ] last_synced_at
+  * [x] user_id
+  * [x] provider
+  * [x] external_id
+  * [x] name
+  * [x] full_name
+  * [x] url
+  * [x] last_synced_at
 
 ---
 
 ### Commits
 
-* [ ] Create `commits`
+* [x] Create `commits`
 
-  * [ ] repository_id
-  * [ ] sha (unique)
-  * [ ] message
-  * [ ] author_name
-  * [ ] author_email
-  * [ ] committed_at
-  * [ ] branch (optional)
+  * [x] repository_id
+  * [x] sha (unique)
+  * [x] message
+  * [x] author_name
+  * [x] author_email
+  * [x] committed_at
+  * [x] branch (optional)
 
 ---
 
@@ -150,25 +150,25 @@ interface GitProviderInterface {
 
 ## Jobs
 
-* [ ] Create `SyncRepositoriesJob`
-* [ ] Create `SyncCommitsJob`
+* [x] Create `SyncRepositoriesJob`
+* [x] Create `SyncCommitsJob`
 
 ---
 
 ## Sync Flow
 
-* [ ] Fetch repositories from provider
-* [ ] Store in database
-* [ ] Fetch commits per repo
-* [ ] Store commits
-* [ ] Update `last_synced_at`
+* [x] Fetch repositories from provider
+* [x] Store in database
+* [x] Fetch commits per repo
+* [x] Store commits
+* [x] Update `last_synced_at`
 
 ---
 
 ## Triggers
 
-* [ ] On initial connect
-* [ ] Manual refresh button
+* [x] On initial connect
+* [x] Manual refresh button
 * [ ] (Later) scheduled cron
 
 ---
@@ -372,8 +372,8 @@ Example:
 
 ## Week 1
 
-* [ ] GitHub OAuth
-* [ ] Sync repos + commits
+* [x] GitHub OAuth
+* [x] Sync repos + commits
 * [ ] Basic timeline UI
 
 ---
