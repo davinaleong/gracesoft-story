@@ -50,5 +50,15 @@ class SyncRepositoriesJob implements ShouldQueue
             ['provider', 'external_id'],
             ['name', 'full_name', 'url', 'last_synced_at', 'updated_at'],
         );
+
+        $externalIds = array_map(
+            fn (array $repository): string => (string) $repository['external_id'],
+            $rows,
+        );
+
+        $user->repositories()
+            ->whereIn('external_id', $externalIds)
+            ->get(['id'])
+            ->each(fn ($repository) => SyncCommitsJob::dispatch($repository->id));
     }
 }
