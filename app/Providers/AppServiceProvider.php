@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Git\GitHubService;
+use App\Services\Git\GitProviderInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(GitProviderInterface::class, GitHubService::class);
     }
 
     /**
