@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Commit;
+use App\Enums\NotificationType;
 use App\Models\Label;
 use App\Models\Repository;
+use App\Services\Notifications\NotificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class CommitLabelController extends Controller
 {
-    public function attach(Request $request, Repository $repo, Commit $commit): RedirectResponse
+    public function attach(Request $request, Repository $repo, Commit $commit, NotificationService $notifications): RedirectResponse
     {
         $user = $request->user();
 
@@ -27,10 +29,18 @@ class CommitLabelController extends Controller
 
         $commit->labels()->syncWithoutDetaching([$label->id]);
 
+        $notifications->notify(
+            $user,
+            NotificationType::TimelineUpdated,
+            'Timeline updated',
+            'A label was added to a chapter.',
+            ['repository' => $repo->full_name ?: $repo->name, 'label' => $label->name, 'sha' => $commit->sha],
+        );
+
         return back()->with('status', 'Label added to chapter.');
     }
 
-    public function detach(Request $request, Repository $repo, Commit $commit, Label $label): RedirectResponse
+    public function detach(Request $request, Repository $repo, Commit $commit, Label $label, NotificationService $notifications): RedirectResponse
     {
         $user = $request->user();
 
@@ -40,10 +50,18 @@ class CommitLabelController extends Controller
 
         $commit->labels()->detach($label->id);
 
+        $notifications->notify(
+            $user,
+            NotificationType::TimelineUpdated,
+            'Timeline updated',
+            'A label was removed from a chapter.',
+            ['repository' => $repo->full_name ?: $repo->name, 'label' => $label->name, 'sha' => $commit->sha],
+        );
+
         return back()->with('status', 'Label removed from chapter.');
     }
 
-    public function bulkApply(Request $request, Repository $repo): RedirectResponse
+    public function bulkApply(Request $request, Repository $repo, NotificationService $notifications): RedirectResponse
     {
         $user = $request->user();
 
@@ -66,6 +84,18 @@ class CommitLabelController extends Controller
         foreach ($commits as $commit) {
             $commit->labels()->syncWithoutDetaching([$label->id]);
         }
+
+        $notifications->notify(
+            $user,
+            NotificationType::TimelineUpdated,
+            'Timeline updated',
+            'A label was bulk-applied to selected chapters.',
+            [
+                'repository' => $repo->full_name ?: $repo->name,
+                'label' => $label->name,
+                'commits_updated' => $commits->count(),
+            ],
+        );
 
         return back()->with('status', 'Label applied to selected chapters.');
     }

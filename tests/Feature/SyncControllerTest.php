@@ -19,7 +19,8 @@ it('queues github sync for authenticated user', function () {
     $response->assertRedirect('/');
 
     Bus::assertDispatched(SyncRepositoriesJob::class, function (SyncRepositoriesJob $job) use ($user): bool {
-        return $job->userId === $user->id;
+        return $job->userId === $user->id
+            && $job->trigger === 'manual';
     });
 });
 

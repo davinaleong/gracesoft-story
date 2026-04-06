@@ -4,6 +4,8 @@ namespace App\Jobs;
 
 use App\Models\User;
 use App\Services\Git\GitProviderInterface;
+use App\Services\Notifications\NotificationService;
+use Throwable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -18,10 +20,15 @@ class SyncRepositoriesJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct(public readonly int $userId) {}
+    public function __construct(
+        public readonly int $userId,
+        public readonly string $trigger = 'auto',
+    ) {}
 
-    public function handle(GitProviderInterface $provider): void
+    public function handle(GitProviderInterface $provider, ?NotificationService $notifications = null): void
     {
+        $notifications ??= app(NotificationService::class);
+
         $user = User::query()->findOrFail($this->userId);
         $repositories = $provider->getRepositories($user);
 
@@ -42,6 +49,10 @@ class SyncRepositoriesJob implements ShouldQueue
         }, $repositories);
 
         if ($rows === []) {
+            if ($this->trigger === 'manual') {
+                $notifications->manualSyncCompleted($user, 0);
+            }
+
             return;
         }
 
@@ -60,5 +71,27 @@ class SyncRepositoriesJob implements ShouldQueue
             ->whereIn('external_id', $externalIds)
             ->get(['id'])
             ->each(fn ($repository) => SyncCommitsJob::dispatch($repository->id));
+
+        if ($this->trigger === 'manual') {
+            $notifications->manualSyncCompleted($user, count($rows));
+        }
+
+        if ($this->trigger !== 'manual') {
+            $notifications->autoSyncSuccess($user, count($rows));
+        }
+    }
+
+    public function failed(?Throwable $exception): void
+    {
+        $user = User::query()->find($this->userId);
+
+        if (! $user) {
+            return;
+        }
+
+        app(NotificationService::class)->syncFailed(
+            $user,
+            $exception?->getMessage() ?? 'Unknown sync error',
+        );
     }
 }

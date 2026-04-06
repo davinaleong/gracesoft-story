@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\GitHubOAuthController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\NotificationCenterController;
 use App\Http\Controllers\StoryController;
 use App\Http\Controllers\CommitLabelController;
 use App\Http\Controllers\SyncController;
@@ -16,6 +17,9 @@ Route::get('/auth/github/redirect', [GitHubOAuthController::class, 'redirect'])
 
 Route::get('/auth/github/callback', [GitHubOAuthController::class, 'callback'])
     ->name('auth.github.callback');
+
+Route::delete('/auth/github/disconnect', [GitHubOAuthController::class, 'disconnect'])
+    ->name('auth.github.disconnect');
 
 Route::post('/sync/github/refresh', [SyncController::class, 'refreshGitHub'])
     ->name('sync.github.refresh');
@@ -43,3 +47,12 @@ Route::delete('/story/{repo}/commits/{commit}/labels/{label}', [CommitLabelContr
 
 Route::post('/story/{repo}/labels/bulk-apply', [CommitLabelController::class, 'bulkApply'])
     ->name('story.labels.bulk-apply');
+
+Route::get('/notifications', [NotificationCenterController::class, 'index'])
+    ->name('notifications.index');
+
+Route::post('/notifications/{id}/read', [NotificationCenterController::class, 'markRead'])
+    ->name('notifications.read');
+
+Route::post('/notifications/read-all', [NotificationCenterController::class, 'markAllRead'])
+    ->name('notifications.read-all');

@@ -14,7 +14,7 @@ class SyncController extends Controller
 
         abort_if($user === null, 401);
 
-        SyncRepositoriesJob::dispatch($user->id);
+        SyncRepositoriesJob::dispatch($user->id, 'manual');
 
         return back()->with('status', 'GitHub sync queued.');
     }

@@ -1,11 +1,14 @@
 <?php
 
+use App\Enums\NotificationType;
 use App\Jobs\SyncRepositoriesJob;
 use App\Models\GitAccount;
 use App\Models\User;
+use App\Notifications\SystemEventNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Notification;
 
 uses(RefreshDatabase::class);
 
@@ -36,6 +39,7 @@ it('stores github token and dispatches sync job on callback', function () {
     config()->set('services.github.user_url', 'https://api.github.com/user');
 
     Bus::fake();
+    Notification::fake();
 
     Http::fake([
         'https://github.com/login/oauth/access_token' => Http::response([
@@ -66,8 +70,15 @@ it('stores github token and dispatches sync job on callback', function () {
     expect($account?->access_token)->toBe('github-access-token');
 
     Bus::assertDispatched(SyncRepositoriesJob::class, function (SyncRepositoriesJob $job) use ($user): bool {
-        return $job->userId === $user->id;
+        return $job->userId === $user->id
+            && $job->trigger === 'auto';
     });
+
+    Notification::assertSentTo(
+        $user,
+        SystemEventNotification::class,
+        fn (SystemEventNotification $notification): bool => $notification->type === NotificationType::IntegrationConnected,
+    );
 });
 
 it('rejects callback when state does not match', function () {
@@ -80,4 +91,30 @@ it('rejects callback when state does not match', function () {
     $response->assertStatus(422);
 
     expect(GitAccount::query()->count())->toBe(0);
+});
+
+it('disconnects github integration and notifies user', function () {
+    Notification::fake();
+
+    $user = User::factory()->create();
+
+    GitAccount::query()->create([
+        'user_id' => $user->id,
+        'provider' => 'github',
+        'access_token' => 'token-value',
+    ]);
+
+    $response = $this->actingAs($user)
+        ->from('/')
+        ->delete('/auth/github/disconnect');
+
+    $response->assertRedirect('/');
+
+    expect(GitAccount::query()->count())->toBe(0);
+
+    Notification::assertSentTo(
+        $user,
+        SystemEventNotification::class,
+        fn (SystemEventNotification $notification): bool => $notification->type === NotificationType::IntegrationDisconnected,
+    );
 });

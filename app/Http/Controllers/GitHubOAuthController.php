@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SyncRepositoriesJob;
+use App\Enums\NotificationType;
 use App\Models\GitAccount;
+use App\Services\Notifications\NotificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -35,7 +37,7 @@ class GitHubOAuthController extends Controller
         return redirect()->away($authorizeUrl.'?'.$query);
     }
 
-    public function callback(Request $request): RedirectResponse
+    public function callback(Request $request, NotificationService $notifications): RedirectResponse
     {
         $user = $request->user();
 
@@ -82,10 +84,33 @@ class GitHubOAuthController extends Controller
             ],
         );
 
-        SyncRepositoriesJob::dispatch($user->id);
+        $notifications->integrationConnected($user, 'github', [
+            'provider' => 'github',
+            'account' => (string) $userResponse->json('login', ''),
+        ]);
+
+        SyncRepositoriesJob::dispatch($user->id, 'auto');
 
         return redirect('/')
             ->with('status', 'GitHub account connected.');
+    }
+
+    public function disconnect(Request $request, NotificationService $notifications): RedirectResponse
+    {
+        $user = $request->user();
+
+        abort_if($user === null, 401);
+
+        GitAccount::query()
+            ->where('user_id', $user->id)
+            ->where('provider', 'github')
+            ->delete();
+
+        $notifications->integrationDisconnected($user, 'github', [
+            'provider' => 'github',
+        ]);
+
+        return back()->with('status', 'GitHub account disconnected.');
     }
 
     private function resolveExpiry(mixed $expiresIn): ?Carbon
