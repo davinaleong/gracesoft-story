@@ -54,3 +54,22 @@
 
 ### Validation snapshot
 - Focused test run: 16 passed, 56 assertions.
+
+## 2026-04-06 - Milestone: Labels, Chapter View, and Tagging Workflows
+
+### Completed in this iteration
+- Added labels and commit_label database tables.
+- Added Label model and commit-label relations.
+- Added label CRUD endpoints (create, edit, delete).
+- Added commit label assignment endpoints (add, remove, bulk apply).
+- Added chapter detail route and view from timeline commit links.
+- Updated timeline to display labels per chapter.
+- Added feature tests covering label CRUD, chapter detail, and commit labeling workflows.
+
+### Current architecture status
+- Timeline now supports chapter drill-down and label display.
+- Label system backend is functional with per-user ownership checks.
+- Bulk tag application is available for multi-commit workflows.
+
+### Validation snapshot
+- Focused test run: 22 passed, 84 assertions.

@@ -121,20 +121,20 @@ interface GitProviderInterface {
 
 ### Labels Table
 
-* [ ] Create `labels`
+* [x] Create `labels`
 
-  * [ ] user_id
-  * [ ] name
-  * [ ] color
+  * [x] user_id
+  * [x] name
+  * [x] color
 
 ---
 
 ### Pivot Table
 
-* [ ] Create `commit_label`
+* [x] Create `commit_label`
 
-  * [ ] commit_id
-  * [ ] label_id
+  * [x] commit_id
+  * [x] label_id
 
 ---
 
@@ -179,23 +179,23 @@ interface GitProviderInterface {
 
 * [x] Create route `/story/{repo}`
 * [x] Display commits chronologically
-* [ ] Show:
+* [x] Show:
 
-  * [ ] message (chapter)
-  * [ ] author
-  * [ ] date
-  * [ ] labels
+  * [x] message (chapter)
+  * [x] author
+  * [x] date
+  * [x] labels
 
 ---
 
 ## Chapter View (Commit Details)
 
-* [ ] Click commit → open detail view
-* [ ] Show:
+* [x] Click commit → open detail view
+* [x] Show:
 
-  * [ ] full message
-  * [ ] metadata
-  * [ ] labels
+  * [x] full message
+  * [x] metadata
+  * [x] labels
   * [ ] (optional) file changes
 
 ---
@@ -204,24 +204,24 @@ interface GitProviderInterface {
 
 ## CRUD
 
-* [ ] Create label
-* [ ] Edit label
-* [ ] Delete label
+* [x] Create label
+* [x] Edit label
+* [x] Delete label
 
 ---
 
 ## Tagging UX
 
-* [ ] Add label to commit
-* [ ] Remove label
-* [ ] Support multiple labels
+* [x] Add label to commit
+* [x] Remove label
+* [x] Support multiple labels
 
 ---
 
 ## Bulk Actions
 
-* [ ] Select multiple commits
-* [ ] Apply label to all
+* [x] Select multiple commits
+* [x] Apply label to all
 
 ---
 
@@ -380,8 +380,8 @@ Example:
 
 ## Week 2
 
-* [ ] Labels system
-* [ ] Tagging UX
+* [x] Labels system
+* [x] Tagging UX
 
 ---
 

@@ -25,7 +25,9 @@
                 <article class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
                     <div class="flex items-start justify-between gap-4">
                         <div>
-                            <p class="text-base font-semibold leading-tight text-slate-900">{{ $commit->message }}</p>
+                            <a href="{{ route('story.chapter', ['repo' => $repository, 'commit' => $commit]) }}" class="text-base font-semibold leading-tight text-slate-900 hover:text-slate-700">
+                                {{ $commit->message }}
+                            </a>
                             <p class="mt-2 text-sm text-slate-600">
                                 {{ $commit->author_name ?: 'Unknown author' }}
                                 @if ($commit->author_email)
@@ -33,6 +35,15 @@
                                     {{ $commit->author_email }}
                                 @endif
                             </p>
+                            @if ($commit->labels->isNotEmpty())
+                                <div class="mt-3 flex flex-wrap gap-2">
+                                    @foreach ($commit->labels as $label)
+                                        <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold text-white" style="background-color: {{ $label->color }}">
+                                            {{ $label->name }}
+                                        </span>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                         <span class="rounded-full bg-slate-900 px-3 py-1 text-xs font-medium tracking-wide text-white">{{ substr($commit->sha, 0, 7) }}</span>
                     </div>
