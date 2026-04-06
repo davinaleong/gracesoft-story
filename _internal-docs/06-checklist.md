@@ -177,8 +177,8 @@ interface GitProviderInterface {
 
 ## Story Timeline (Main Feature)
 
-* [ ] Create route `/story/{repo}`
-* [ ] Display commits chronologically
+* [x] Create route `/story/{repo}`
+* [x] Display commits chronologically
 * [ ] Show:
 
   * [ ] message (chapter)
@@ -374,7 +374,7 @@ Example:
 
 * [x] GitHub OAuth
 * [x] Sync repos + commits
-* [ ] Basic timeline UI
+* [x] Basic timeline UI
 
 ---
 

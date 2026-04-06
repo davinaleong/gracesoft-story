@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GitHubOAuthController;
+use App\Http\Controllers\StoryController;
 use App\Http\Controllers\SyncController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,3 +17,6 @@ Route::get('/auth/github/callback', [GitHubOAuthController::class, 'callback'])
 
 Route::post('/sync/github/refresh', [SyncController::class, 'refreshGitHub'])
     ->name('sync.github.refresh');
+
+Route::get('/story/{repo}', [StoryController::class, 'timeline'])
+    ->name('story.timeline');

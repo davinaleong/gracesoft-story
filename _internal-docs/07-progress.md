@@ -38,3 +38,19 @@
 
 ### Validation snapshot
 - Focused test run: 13 passed, 49 assertions.
+
+## 2026-04-06 - Milestone: Story Timeline MVP Route and View
+
+### Completed in this iteration
+- Added story timeline endpoint at /story/{repo}.
+- Implemented StoryController with repository ownership checks.
+- Built a timeline Blade view that renders commits in reverse chronological order.
+- Added feature tests for owner access, unauthorized access, and unauthenticated access.
+
+### Current architecture status
+- End-to-end ingest path is functional: OAuth -> repositories -> commits.
+- Users can now view synced commits as a timeline for owned repositories.
+- Timeline foundation is ready for labels, filters, and richer chapter detail views.
+
+### Validation snapshot
+- Focused test run: 16 passed, 56 assertions.
