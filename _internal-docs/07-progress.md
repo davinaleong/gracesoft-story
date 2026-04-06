@@ -23,3 +23,18 @@
 
 ### Validation snapshot
 - Focused test run: 11 passed, 44 assertions.
+
+## 2026-04-06 - Milestone: Manual GitHub Refresh Trigger
+
+### Completed in this iteration
+- Added a manual refresh endpoint to queue GitHub repository sync for the current user.
+- Added authorization behavior for refresh requests (authenticated only).
+- Added feature tests for successful queue dispatch and unauthenticated rejection.
+
+### Current architecture status
+- Initial sync runs automatically after OAuth callback.
+- Manual sync can now be triggered on demand from the app.
+- Repository sync continues to fan out commit sync jobs.
+
+### Validation snapshot
+- Focused test run: 13 passed, 49 assertions.
