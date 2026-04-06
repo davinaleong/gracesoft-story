@@ -73,7 +73,13 @@ class GitHubService implements GitProviderInterface
 
     private function resolveTokenForUser(User $user): string
     {
-        $userToken = $user->getAttribute('github_token');
+        if (! $user->exists) {
+            return $this->resolveTokenFromConfig();
+        }
+
+        $userToken = $user->gitAccounts()
+            ->where('provider', 'github')
+            ->value('access_token');
 
         if (is_string($userToken) && $userToken !== '') {
             return $userToken;
