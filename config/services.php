@@ -41,6 +41,9 @@ return [
         'redirect' => env('GITHUB_REDIRECT_URI'),
         'token' => env('GITHUB_TOKEN'),
         'api_url' => env('GITHUB_API_URL', 'https://api.github.com'),
+        'authorize_url' => env('GITHUB_AUTHORIZE_URL', 'https://github.com/login/oauth/authorize'),
+        'token_url' => env('GITHUB_TOKEN_URL', 'https://github.com/login/oauth/access_token'),
+        'user_url' => env('GITHUB_USER_URL', 'https://api.github.com/user'),
     ],
 
 ];
