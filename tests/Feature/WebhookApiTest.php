@@ -33,10 +33,15 @@ it('processes stripe subscription update webhook and stores event', function () 
         'stripe_customer_id' => 'cus_123',
     ]);
 
-    $plan = Plan::query()->where('slug', 'growth')->firstOrFail();
-    $plan->update([
+    $plan = Plan::query()->create([
+        'id' => (string) Str::uuid(),
+        'name' => 'Growth',
+        'slug' => 'growth',
         'stripe_price_id' => 'price_growth',
         'stripe_product_id' => 'prod_growth',
+        'max_users' => 5,
+        'max_items' => 500,
+        'max_replies' => 2000,
     ]);
 
     $payload = [

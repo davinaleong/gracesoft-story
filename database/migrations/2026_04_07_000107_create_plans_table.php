@@ -2,9 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Str;
 
 return new class extends Migration
 {
@@ -21,52 +19,6 @@ return new class extends Migration
             $table->unsignedInteger('max_replies')->nullable();
             $table->timestamps();
         });
-
-        $now = now();
-        $envOrNull = static function (string $key): ?string {
-            $value = trim((string) env($key, ''));
-
-            return $value !== '' ? $value : null;
-        };
-
-        DB::table('plans')->insert([
-            [
-                'id' => (string) Str::uuid(),
-                'name' => 'Free',
-                'slug' => 'free',
-                'stripe_price_id' => null,
-                'stripe_product_id' => null,
-                'max_users' => 1,
-                'max_items' => 50,
-                'max_replies' => 100,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'id' => (string) Str::uuid(),
-                'name' => 'Growth',
-                'slug' => 'growth',
-                'stripe_price_id' => $envOrNull('STRIPE_GROWTH_PRICE_ID'),
-                'stripe_product_id' => $envOrNull('STRIPE_GROWTH_PRODUCT_ID'),
-                'max_users' => 5,
-                'max_items' => 500,
-                'max_replies' => 2000,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'id' => (string) Str::uuid(),
-                'name' => 'Pro',
-                'slug' => 'pro',
-                'stripe_price_id' => $envOrNull('STRIPE_PRO_PRICE_ID'),
-                'stripe_product_id' => $envOrNull('STRIPE_PRO_PRODUCT_ID'),
-                'max_users' => 20,
-                'max_items' => 5000,
-                'max_replies' => 20000,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-        ]);
     }
 
     public function down(): void
