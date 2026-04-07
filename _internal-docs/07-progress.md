@@ -1,5 +1,23 @@
 # GraceSoft Story Progress Log
 
+## 2026-04-07 - Milestone: Stripe and Postmark Webhooks (API)
+
+### Completed in this iteration
+- Enabled API route loading in app bootstrap and introduced `routes/api.php`.
+- Added `POST /api/webhooks/stripe` endpoint with Stripe signature verification.
+- Added Stripe event idempotency handling using `stripe_webhook_events`.
+- Implemented subscription synchronization for Stripe subscription lifecycle events.
+- Added `POST /api/webhooks/postmark` endpoint with token-based verification.
+- Added webhook feature tests covering valid/invalid Stripe and Postmark webhook requests.
+
+### Current architecture status
+- Billing/inbound integration surface now includes API webhooks for Stripe and Postmark.
+- Stripe webhook processing now updates local subscription state for mapped accounts/plans.
+- Webhook entry points are validated by automated feature tests.
+
+### Validation snapshot
+- Full test run: 35 passed, 112 assertions.
+
 ## 2026-04-07 - Milestone: Account and Subscription Schema Integration
 
 ### Completed in this iteration
