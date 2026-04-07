@@ -188,6 +188,9 @@ class StripeWebhookController extends Controller
 
         if (! $plan->exists) {
             $plan->id = (string) Str::uuid();
+        }
+
+        if ($tier !== '') {
             $this->applyTierDefaults($plan, $tier);
         }
 
@@ -226,8 +229,9 @@ class StripeWebhookController extends Controller
             if (! $plan->exists) {
                 $plan->id = (string) Str::uuid();
                 $plan->name = ucfirst($tier);
-                $this->applyTierDefaults($plan, $tier);
             }
+
+            $this->applyTierDefaults($plan, $tier);
         } elseif ($productId !== '') {
             $plan = Plan::query()->where('stripe_product_id', $productId)->first();
         }

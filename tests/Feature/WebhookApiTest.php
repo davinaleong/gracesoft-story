@@ -272,6 +272,76 @@ it('syncs stripe price events into plans using metadata tier', function () {
     expect($plan?->stripe_price_id)->toBe('price_growth_123');
 });
 
+it('updates existing plan gated features from stripe product tier metadata', function () {
+    config()->set('services.stripe.webhook_secret', 'whsec_test');
+
+    Plan::query()->create([
+        'id' => (string) Str::uuid(),
+        'name' => 'Growth',
+        'slug' => 'growth',
+        'stripe_price_id' => null,
+        'stripe_product_id' => null,
+        'max_users' => 1,
+        'max_timelines' => 1,
+        'storage_mb' => 100,
+        'max_items' => 50,
+        'max_replies' => 100,
+        'can_use_integrations' => false,
+        'can_collaborate' => false,
+        'can_use_auto_sync' => false,
+        'can_use_smart_automation' => false,
+        'can_use_activity_logs' => false,
+        'can_use_priority_sync' => false,
+        'can_use_advanced_privacy' => false,
+        'can_share_private_links' => false,
+        'can_use_insights' => false,
+    ]);
+
+    $payload = [
+        'id' => 'evt_product_growth_refresh',
+        'type' => 'product.updated',
+        'data' => [
+            'object' => [
+                'id' => 'prod_growth_refresh',
+                'name' => 'Growth',
+                'metadata' => [
+                    'app' => 'story',
+                    'tier' => 'growth',
+                ],
+            ],
+        ],
+    ];
+
+    $json = json_encode($payload, JSON_THROW_ON_ERROR);
+    $timestamp = time();
+    $signature = hash_hmac('sha256', $timestamp.'.'.$json, 'whsec_test');
+
+    $response = $this->call(
+        'POST',
+        '/api/webhooks/stripe',
+        [],
+        [],
+        [],
+        [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_STRIPE_SIGNATURE' => 't='.$timestamp.',v1='.$signature,
+        ],
+        $json,
+    );
+
+    $response->assertOk();
+
+    $plan = Plan::query()->where('slug', 'growth')->first();
+
+    expect($plan)->not->toBeNull();
+    expect($plan?->stripe_product_id)->toBe('prod_growth_refresh');
+    expect($plan?->max_timelines)->toBe(10);
+    expect($plan?->storage_mb)->toBe(5120);
+    expect($plan?->can_use_integrations)->toBeTrue();
+    expect($plan?->can_share_private_links)->toBeTrue();
+    expect($plan?->can_use_auto_sync)->toBeFalse();
+});
+
 it('accepts postmark webhook with valid token', function () {
     config()->set('services.postmark.webhook_token', 'pm_token');
 
