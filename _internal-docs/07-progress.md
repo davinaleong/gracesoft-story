@@ -1,5 +1,24 @@
 # GraceSoft Story Progress Log
 
+## 2026-04-07 - Milestone: UI Foundations (Shell, Connect, Timeline, Inspector)
+
+### Completed in this iteration
+- Implemented a global UI shell with fixed left sidebar, centered content, and optional right inspector panel.
+- Added repository-aware sidebar navigation with active state, empty state, and scrollable repository list.
+- Rebuilt the root page as "Connect your repository" with GitHub primary action and disabled GitLab/Bitbucket options.
+- Redesigned story timeline page to use chapter-first language and lightweight vertical list styling.
+- Redesigned chapter detail page to use a right-side inspector while keeping timeline context in the center.
+- Added global UI tokens and reusable layout/interaction classes in `resources/css/app.css`.
+- Updated routing/controller data loading so sidebar and connect page have repository/provider connection context.
+
+### Current architecture status
+- Story pages now share a consistent pre-glass MacOS-inspired visual system using gray and sky accents.
+- Primary storytelling pages (connect, timeline, chapter details) align with the first checklist slice.
+- Remaining UI checklist items are now mostly focused on labels UX polish, skeleton/error states, and paid insights/paywall views.
+
+### Validation snapshot
+- IDE diagnostics: no errors in touched PHP/Blade/CSS files.
+
 ## 2026-04-07 - Milestone: Stripe and Postmark Webhooks (API)
 
 ### Completed in this iteration

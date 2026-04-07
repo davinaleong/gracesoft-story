@@ -6,10 +6,25 @@ use App\Http\Controllers\NotificationCenterController;
 use App\Http\Controllers\StoryController;
 use App\Http\Controllers\CommitLabelController;
 use App\Http\Controllers\SyncController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function (Request $request) {
+    $user = $request->user();
+
+    $repositories = $user?->repositories()
+        ->orderBy('full_name')
+        ->get(['id', 'name', 'full_name'])
+        ?? collect();
+
+    $hasGitHubAccount = $user?->gitAccounts()
+        ->where('provider', 'github')
+        ->exists() ?? false;
+
+    return view('welcome', [
+        'repositories' => $repositories,
+        'hasGitHubAccount' => $hasGitHubAccount,
+    ]);
 });
 
 Route::get('/auth/github/redirect', [GitHubOAuthController::class, 'redirect'])

@@ -23,9 +23,14 @@ class StoryController extends Controller
             ->paginate(25)
             ->withQueryString();
 
+        $repositories = $user->repositories()
+            ->orderBy('full_name')
+            ->get(['id', 'name', 'full_name']);
+
         return view('story.timeline', [
             'repository' => $repo,
             'commits' => $commits,
+            'repositories' => $repositories,
         ]);
     }
 
@@ -37,11 +42,24 @@ class StoryController extends Controller
         abort_if($repo->user_id !== $user->id, 404);
         abort_if($commit->repository_id !== $repo->id, 404);
 
+        $commits = $repo->commits()
+            ->with('labels')
+            ->orderByDesc('committed_at')
+            ->orderByDesc('id')
+            ->paginate(25)
+            ->withQueryString();
+
+        $repositories = $user->repositories()
+            ->orderBy('full_name')
+            ->get(['id', 'name', 'full_name']);
+
         $commit->load('labels');
 
         return view('story.chapter', [
             'repository' => $repo,
             'commit' => $commit,
+            'commits' => $commits,
+            'repositories' => $repositories,
         ]);
     }
 }

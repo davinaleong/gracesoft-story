@@ -9,3 +9,66 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+:root {
+    --gs-bg: #f8fafc;
+    --gs-panel: #ffffff;
+    --gs-panel-soft: #f3f4f6;
+    --gs-border: #e5e7eb;
+    --gs-text: #111827;
+    --gs-muted: #6b7280;
+    --gs-accent: #0284c7;
+    --gs-accent-soft: #e0f2fe;
+}
+
+@keyframes gs-rise {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@layer components {
+    .gs-page {
+        @apply min-h-screen bg-gray-50 text-gray-900;
+        background-image: radial-gradient(circle at 10% 0%, #e0f2fe 0%, transparent 35%),
+            radial-gradient(circle at 90% 100%, #f3f4f6 0%, transparent 45%);
+    }
+
+    .gs-shell {
+        @apply mx-auto min-h-screen w-full max-w-screen-2xl lg:grid lg:grid-cols-[17rem_minmax(0,1fr)_22rem];
+    }
+
+    .gs-sidebar {
+        @apply border-b border-gray-200 bg-gray-100/95 p-4 backdrop-blur-sm lg:sticky lg:top-0 lg:h-screen lg:border-r lg:border-b-0 lg:p-6;
+    }
+
+    .gs-main {
+        @apply p-4 sm:p-6 lg:p-8;
+    }
+
+    .gs-inspector {
+        @apply border-t border-gray-200 bg-white p-4 sm:p-6 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:border-l lg:border-t-0;
+    }
+
+    .gs-panel {
+        @apply rounded-lg border border-gray-200 bg-white shadow-sm;
+    }
+
+    .gs-interactive {
+        @apply transition-all duration-200 ease-out;
+    }
+
+    .gs-interactive:hover {
+        @apply bg-gray-50;
+    }
+
+    .gs-fade-up {
+        animation: gs-rise 280ms ease-out both;
+    }
+}

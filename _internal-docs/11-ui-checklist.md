@@ -16,40 +16,40 @@
 
 ## Layout
 
-* [ ] Sidebar (fixed, left)
-* [ ] Main content area (center)
-* [ ] Optional inspector panel (right)
+* [x] Sidebar (fixed, left)
+* [x] Main content area (center)
+* [x] Optional inspector panel (right)
 
 ---
 
 ## Visual Style
 
-* [ ] Light background (white / gray-50)
-* [ ] Subtle borders (`gray-200`)
-* [ ] Soft shadows (`shadow-sm`)
-* [ ] Rounded corners (`rounded-lg`)
+* [x] Light background (white / gray-50)
+* [x] Subtle borders (`gray-200`)
+* [x] Soft shadows (`shadow-sm`)
+* [x] Rounded corners (`rounded-lg`)
 
 ---
 
 ## Typography
 
-* [ ] Clear hierarchy (title > body > meta)
-* [ ] Muted metadata text (gray-500)
-* [ ] Consistent spacing
+* [x] Clear hierarchy (title > body > meta)
+* [x] Muted metadata text (gray-500)
+* [x] Consistent spacing
 
 ---
 
 ## Interaction
 
-* [ ] Hover states (subtle background change)
-* [ ] Smooth transitions (150–200ms)
-* [ ] Click feedback (highlight / active state)
+* [x] Hover states (subtle background change)
+* [x] Smooth transitions (150–200ms)
+* [x] Click feedback (highlight / active state)
 
 ---
 
 ## Copy
 
-* [ ] No Git jargon
+* [x] No Git jargon
 * [ ] Human-friendly labels:
 
   * commit → chapter
@@ -64,27 +64,27 @@
 
 ## Structure
 
-* [ ] Logo / product name
-* [ ] Repositories list
-* [ ] Insights (paid)
-* [ ] Settings
+* [x] Logo / product name
+* [x] Repositories list
+* [x] Insights (paid)
+* [x] Settings
 
 ---
 
 ## Design
 
-* [ ] Light gray background
-* [ ] Active item highlight
-* [ ] Icons + labels
-* [ ] Scrollable repo list
+* [x] Light gray background
+* [x] Active item highlight
+* [x] Icons + labels
+* [x] Scrollable repo list
 
 ---
 
 ## States
 
-* [ ] Empty state (no repos)
-* [ ] Active repo selected
-* [ ] Hover state
+* [x] Empty state (no repos)
+* [x] Active repo selected
+* [x] Hover state
 
 ---
 
@@ -94,34 +94,34 @@
 
 ## Content
 
-* [ ] Title: “Connect your repository”
+* [x] Title: “Connect your repository”
 * [ ] Provider buttons:
 
-  * [ ] GitHub
-  * [ ] GitLab (disabled / coming soon)
-  * [ ] Bitbucket (disabled / coming soon)
+  * [x] GitHub
+  * [x] GitLab (disabled / coming soon)
+  * [x] Bitbucket (disabled / coming soon)
 
 ---
 
 ## UI Elements
 
-* [ ] OAuth button (primary CTA)
+* [x] OAuth button (primary CTA)
 * [ ] Provider logos
-* [ ] Short explanation text
+* [x] Short explanation text
 
 ---
 
 ## States
 
 * [ ] Loading (connecting)
-* [ ] Success (connected)
+* [x] Success (connected)
 * [ ] Error (failed connection)
 
 ---
 
 ## Empty State Message
 
-* [ ] “Start your story by connecting a repository”
+* [x] “Start your story by connecting a repository”
 
 ---
 
@@ -131,8 +131,8 @@
 
 ## Layout
 
-* [ ] Page title (repo name)
-* [ ] Timeline list (vertical)
+* [x] Page title (repo name)
+* [x] Timeline list (vertical)
 * [ ] Optional filters (top)
 
 ---
@@ -141,24 +141,24 @@
 
 ### Content
 
-* [ ] Commit message (title)
-* [ ] Author
-* [ ] Date/time
-* [ ] Labels (badges)
+* [x] Commit message (title)
+* [x] Author
+* [x] Date/time
+* [x] Labels (badges)
 
 ---
 
 ### Design
 
-* [ ] Clean list (NOT heavy cards)
-* [ ] Subtle separators
-* [ ] Highlight on hover
+* [x] Clean list (NOT heavy cards)
+* [x] Subtle separators
+* [x] Highlight on hover
 
 ---
 
 ### Interaction
 
-* [ ] Click → open chapter details
+* [x] Click → open chapter details
 * [ ] Multi-select (future)
 * [ ] Inline label editing
 
@@ -167,7 +167,7 @@
 ## States
 
 * [ ] Loading (skeleton list)
-* [ ] Empty (no commits)
+* [x] Empty (no commits)
 * [ ] Error state
 
 ---
@@ -178,18 +178,18 @@
 
 ## Content
 
-* [ ] Full commit message
-* [ ] Author + email
-* [ ] Date/time
-* [ ] Labels
+* [x] Full commit message
+* [x] Author + email
+* [x] Date/time
+* [x] Labels
 * [ ] Changes (optional MVP skip)
 
 ---
 
 ## Layout
 
-* [ ] Right-side panel OR modal
-* [ ] Scrollable content
+* [x] Right-side panel OR modal
+* [x] Scrollable content
 
 ---
 
