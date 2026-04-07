@@ -9,6 +9,7 @@ use App\Models\StripeWebhookEvent;
 use App\Models\Subscription;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class StripeWebhookController extends Controller
@@ -95,19 +96,24 @@ class StripeWebhookController extends Controller
 
         $account = Account::query()->where('stripe_customer_id', $customerId)->first();
         if (! $account) {
+            Log::warning('Stripe webhook skipped: account not found for customer.', [
+                'customer_id' => $customerId,
+                'subscription_id' => $stripeSubscriptionId,
+            ]);
+
             return;
         }
 
-        $priceId = $this->extractPriceId($object);
-        $plan = $priceId !== ''
-            ? Plan::query()->where('stripe_price_id', $priceId)->first()
-            : null;
+        $plan = $this->resolvePlan($object);
 
         if (! $plan) {
-            $plan = Plan::query()->where('slug', 'free')->first();
-        }
+            Log::warning('Stripe webhook skipped: plan could not be resolved.', [
+                'customer_id' => $customerId,
+                'subscription_id' => $stripeSubscriptionId,
+                'price_id' => $this->extractPriceId($object),
+                'tier' => $this->extractTier($object),
+            ]);
 
-        if (! $plan) {
             return;
         }
 
@@ -116,16 +122,43 @@ class StripeWebhookController extends Controller
             ? now()->setTimestamp((int) $object['current_period_end'])
             : null;
 
-        Subscription::query()->updateOrCreate(
-            ['stripe_subscription_id' => $stripeSubscriptionId],
-            [
-                'id' => (string) Str::uuid(),
-                'account_id' => $account->id,
-                'plan_id' => $plan->id,
-                'status' => $type === 'customer.subscription.deleted' ? 'canceled' : $status,
-                'current_period_end' => $currentPeriodEnd,
-            ],
-        );
+        $subscription = Subscription::query()->firstOrNew([
+            'stripe_subscription_id' => $stripeSubscriptionId,
+        ]);
+
+        if (! $subscription->exists) {
+            $subscription->id = (string) Str::uuid();
+        }
+
+        $subscription->account_id = $account->id;
+        $subscription->plan_id = $plan->id;
+        $subscription->status = $type === 'customer.subscription.deleted' ? 'canceled' : $status;
+        $subscription->current_period_end = $currentPeriodEnd;
+        $subscription->save();
+    }
+
+    /**
+     * @param array<string, mixed> $object
+     */
+    private function resolvePlan(array $object): ?Plan
+    {
+        $priceId = $this->extractPriceId($object);
+        if ($priceId !== '') {
+            $plan = Plan::query()->where('stripe_price_id', $priceId)->first();
+            if ($plan) {
+                return $plan;
+            }
+        }
+
+        $tier = $this->extractTier($object);
+        if ($tier !== '') {
+            $plan = Plan::query()->where('slug', $tier)->first();
+            if ($plan) {
+                return $plan;
+            }
+        }
+
+        return Plan::query()->where('slug', 'free')->first();
     }
 
     /**
@@ -136,5 +169,25 @@ class StripeWebhookController extends Controller
         $priceId = $object['items']['data'][0]['price']['id'] ?? null;
 
         return is_string($priceId) ? $priceId : '';
+    }
+
+    /**
+     * @param array<string, mixed> $object
+     */
+    private function extractTier(array $object): string
+    {
+        $tier = $object['metadata']['tier']
+            ?? $object['items']['data'][0]['price']['metadata']['tier']
+            ?? null;
+
+        if (! is_string($tier)) {
+            return '';
+        }
+
+        $normalized = strtolower(trim($tier));
+
+        return in_array($normalized, ['free', 'growth', 'pro'], true)
+            ? $normalized
+            : '';
     }
 }
