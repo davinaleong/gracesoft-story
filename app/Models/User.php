@@ -27,6 +27,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'two_factor_enabled_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
@@ -44,5 +45,10 @@ class User extends Authenticatable
     public function labels(): HasMany
     {
         return $this->hasMany(Label::class);
+    }
+
+    public function accounts(): HasMany
+    {
+        return $this->hasMany(Account::class, 'owner_user_id');
     }
 }

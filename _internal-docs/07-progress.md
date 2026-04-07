@@ -1,5 +1,25 @@
 # GraceSoft Story Progress Log
 
+## 2026-04-07 - Milestone: Account and Subscription Schema Integration
+
+### Completed in this iteration
+- Integrated behind-the-scenes account management schema from sister product into this codebase.
+- Added `accounts` table with UUID primary key, owner linkage, and Stripe customer mapping.
+- Added `plans` table with UUID primary key and seeded `Free`, `Growth`, and `Pro` rows.
+- Added `subscriptions` table with UUID primary key, status, billing period, and account/plan foreign keys.
+- Added `stripe_webhook_events` table for event idempotency and processing tracking.
+- Added `two_factor_enabled_at` column to `users`.
+- Added Eloquent models: `Account`, `Plan`, `Subscription`, and `StripeWebhookEvent`.
+- Wired `User` -> `accounts` relationship and cast for `two_factor_enabled_at`.
+
+### Current architecture status
+- Existing Git sync/timeline domain remains intact.
+- Account, plan, subscription, and Stripe webhook persistence layer is now present and ready for billing/auth flows.
+- Plan defaults are seeded in migration to align provisioning logic with pricing tiers.
+
+### Validation snapshot
+- Full test run: 31 passed, 104 assertions.
+
 ## 2026-04-06 - Milestone: End-to-End Sync Pipeline (OAuth -> Repositories -> Commits)
 
 ### Completed in this iteration
