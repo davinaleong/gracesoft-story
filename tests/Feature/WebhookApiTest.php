@@ -170,6 +170,102 @@ it('processes stripe subscription update using metadata tier when price id is mi
     expect($subscription?->plan_id)->toBe($plan->id);
 });
 
+it('syncs stripe product events into plans using metadata tier', function () {
+    config()->set('services.stripe.webhook_secret', 'whsec_test');
+
+    $payload = [
+        'id' => 'evt_product_123',
+        'type' => 'product.created',
+        'data' => [
+            'object' => [
+                'id' => 'prod_growth_123',
+                'name' => 'Growth',
+                'description' => 'Growth plan product',
+                'active' => true,
+                'metadata' => [
+                    'app' => 'story',
+                    'tier' => 'growth',
+                ],
+            ],
+        ],
+    ];
+
+    $json = json_encode($payload, JSON_THROW_ON_ERROR);
+    $timestamp = time();
+    $signature = hash_hmac('sha256', $timestamp.'.'.$json, 'whsec_test');
+
+    $response = $this->call(
+        'POST',
+        '/api/webhooks/stripe',
+        [],
+        [],
+        [],
+        [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_STRIPE_SIGNATURE' => 't='.$timestamp.',v1='.$signature,
+        ],
+        $json,
+    );
+
+    $response->assertOk();
+
+    $plan = Plan::query()->where('slug', 'growth')->first();
+
+    expect($plan)->not->toBeNull();
+    expect($plan?->stripe_product_id)->toBe('prod_growth_123');
+    expect($plan?->stripe_product_details['name'] ?? null)->toBe('Growth');
+    expect($plan?->stripe_product_details['description'] ?? null)->toBe('Growth plan product');
+    expect($plan?->stripe_product_details['active'] ?? null)->toBeTrue();
+    expect($plan?->stripe_product_details['metadata'] ?? [])->toBe([
+        'app' => 'story',
+        'tier' => 'growth',
+    ]);
+});
+
+it('syncs stripe price events into plans using metadata tier', function () {
+    config()->set('services.stripe.webhook_secret', 'whsec_test');
+
+    $payload = [
+        'id' => 'evt_price_123',
+        'type' => 'price.created',
+        'data' => [
+            'object' => [
+                'id' => 'price_growth_123',
+                'product' => 'prod_growth_123',
+                'metadata' => [
+                    'app' => 'story',
+                    'tier' => 'growth',
+                ],
+            ],
+        ],
+    ];
+
+    $json = json_encode($payload, JSON_THROW_ON_ERROR);
+    $timestamp = time();
+    $signature = hash_hmac('sha256', $timestamp.'.'.$json, 'whsec_test');
+
+    $response = $this->call(
+        'POST',
+        '/api/webhooks/stripe',
+        [],
+        [],
+        [],
+        [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_STRIPE_SIGNATURE' => 't='.$timestamp.',v1='.$signature,
+        ],
+        $json,
+    );
+
+    $response->assertOk();
+
+    $plan = Plan::query()->where('slug', 'growth')->first();
+
+    expect($plan)->not->toBeNull();
+    expect($plan?->stripe_product_id)->toBe('prod_growth_123');
+    expect($plan?->stripe_price_id)->toBe('price_growth_123');
+});
+
 it('accepts postmark webhook with valid token', function () {
     config()->set('services.postmark.webhook_token', 'pm_token');
 

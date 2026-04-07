@@ -42,6 +42,7 @@ class StripeWebhookController extends Controller
             'processed_at' => now(),
         ]);
 
+        $this->applyCatalogEvent($event);
         $this->applySubscriptionEvent($event);
 
         return response()->json(['message' => 'Webhook processed.'], 200);
@@ -138,6 +139,138 @@ class StripeWebhookController extends Controller
     }
 
     /**
+     * @param array<string, mixed> $event
+     */
+    private function applyCatalogEvent(array $event): void
+    {
+        $type = (string) ($event['type'] ?? '');
+        if (! in_array($type, ['product.created', 'product.updated', 'product.deleted', 'price.created', 'price.updated', 'price.deleted'], true)) {
+            return;
+        }
+
+        /** @var array<string, mixed> $object */
+        $object = is_array($event['data']['object'] ?? null) ? $event['data']['object'] : [];
+
+        if (str_starts_with($type, 'product.')) {
+            $this->syncProductCatalog($object, $type);
+
+            return;
+        }
+
+        $this->syncPriceCatalog($object, $type);
+    }
+
+    /**
+     * @param array<string, mixed> $product
+     */
+    private function syncProductCatalog(array $product, string $eventType): void
+    {
+        $productId = (string) ($product['id'] ?? '');
+        if ($productId === '') {
+            return;
+        }
+
+        $plan = Plan::query()->where('stripe_product_id', $productId)->first();
+
+        $tier = $this->extractTier($product);
+        if (! $plan && $tier !== '') {
+            $plan = Plan::query()->firstOrNew(['slug' => $tier]);
+        }
+
+        if (! $plan) {
+            $name = trim((string) ($product['name'] ?? ''));
+            $baseSlug = strtolower(trim((string) str($name)->slug('-')));
+            $slug = $baseSlug !== '' ? $baseSlug : 'plan-'.strtolower(substr(str_replace('-', '', (string) Str::uuid()), 0, 8));
+
+            $plan = Plan::query()->firstOrNew(['slug' => $slug]);
+            $tier = $tier !== '' ? $tier : $slug;
+        }
+
+        if (! $plan->exists) {
+            $plan->id = (string) Str::uuid();
+            [$maxUsers, $maxItems, $maxReplies] = $this->defaultLimitsForTier($tier);
+            $plan->max_users = $maxUsers;
+            $plan->max_items = $maxItems;
+            $plan->max_replies = $maxReplies;
+        }
+
+        $plan->name = (string) ($product['name'] ?? ucfirst($tier));
+        $plan->stripe_product_details = $this->extractProductDetails($product);
+
+        if ($eventType === 'product.deleted') {
+            if ($plan->stripe_product_id === $productId) {
+                $plan->stripe_product_id = null;
+                $plan->save();
+            }
+
+            return;
+        }
+
+        $plan->stripe_product_id = $productId;
+        $plan->save();
+    }
+
+    /**
+     * @param array<string, mixed> $price
+     */
+    private function syncPriceCatalog(array $price, string $eventType): void
+    {
+        $priceId = (string) ($price['id'] ?? '');
+        if ($priceId === '') {
+            return;
+        }
+
+        $productId = is_string($price['product'] ?? null) ? (string) $price['product'] : '';
+
+        $plan = null;
+        $tier = $this->extractTier($price);
+        if ($tier !== '') {
+            $plan = Plan::query()->firstOrNew(['slug' => $tier]);
+            if (! $plan->exists) {
+                $plan->id = (string) Str::uuid();
+                $plan->name = ucfirst($tier);
+                [$maxUsers, $maxItems, $maxReplies] = $this->defaultLimitsForTier($tier);
+                $plan->max_users = $maxUsers;
+                $plan->max_items = $maxItems;
+                $plan->max_replies = $maxReplies;
+            }
+        } elseif ($productId !== '') {
+            $plan = Plan::query()->where('stripe_product_id', $productId)->first();
+        }
+
+        if (! $plan) {
+            Log::warning('Stripe price webhook skipped: plan could not be resolved.', [
+                'price_id' => $priceId,
+                'product_id' => $productId,
+            ]);
+
+            return;
+        }
+
+        if ($eventType === 'price.deleted') {
+            if ($plan->stripe_price_id === $priceId) {
+                $plan->stripe_price_id = null;
+                $plan->save();
+            }
+
+            return;
+        }
+
+        // Enforce unique mapping: one Stripe price id to one plan.
+        Plan::query()
+            ->where('stripe_price_id', $priceId)
+            ->where('id', '!=', $plan->id)
+            ->update(['stripe_price_id' => null]);
+
+        if ($productId !== '') {
+            $plan->stripe_product_id = $productId;
+        }
+
+        $plan->stripe_price_id = $priceId;
+        $plan->save();
+    }
+
+    /**
      * @param array<string, mixed> $object
      */
     private function resolvePlan(array $object): ?Plan
@@ -176,6 +309,14 @@ class StripeWebhookController extends Controller
      */
     private function extractTier(array $object): string
     {
+        $app = $object['metadata']['app']
+            ?? $object['items']['data'][0]['price']['metadata']['app']
+            ?? null;
+
+        if (is_string($app) && strtolower(trim($app)) !== 'story') {
+            return '';
+        }
+
         $tier = $object['metadata']['tier']
             ?? $object['items']['data'][0]['price']['metadata']['tier']
             ?? null;
@@ -189,5 +330,32 @@ class StripeWebhookController extends Controller
         return in_array($normalized, ['free', 'growth', 'pro'], true)
             ? $normalized
             : '';
+    }
+
+    /**
+     * @param array<string, mixed> $product
+     * @return array<string, mixed>
+     */
+    private function extractProductDetails(array $product): array
+    {
+        return [
+            'name' => is_string($product['name'] ?? null) ? $product['name'] : null,
+            'description' => is_string($product['description'] ?? null) ? $product['description'] : null,
+            'active' => (bool) ($product['active'] ?? false),
+            'metadata' => is_array($product['metadata'] ?? null) ? $product['metadata'] : [],
+        ];
+    }
+
+    /**
+     * @return array{0:int,1:int|null,2:int|null}
+     */
+    private function defaultLimitsForTier(string $tier): array
+    {
+        return match ($tier) {
+            'free' => [1, 50, 100],
+            'growth' => [5, 500, 2000],
+            'pro' => [20, 5000, 20000],
+            default => [1, null, null],
+        };
     }
 }

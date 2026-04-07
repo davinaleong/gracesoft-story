@@ -24,10 +24,21 @@ class Plan extends Model
         'slug',
         'stripe_price_id',
         'stripe_product_id',
+        'stripe_product_details',
         'max_users',
         'max_items',
         'max_replies',
     ];
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'stripe_product_details' => 'array',
+        ];
+    }
 
     public function subscriptions(): HasMany
     {
