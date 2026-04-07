@@ -26,8 +26,19 @@ class Plan extends Model
         'stripe_product_id',
         'stripe_product_details',
         'max_users',
+        'max_timelines',
+        'storage_mb',
         'max_items',
         'max_replies',
+        'can_use_integrations',
+        'can_collaborate',
+        'can_use_auto_sync',
+        'can_use_smart_automation',
+        'can_use_activity_logs',
+        'can_use_priority_sync',
+        'can_use_advanced_privacy',
+        'can_share_private_links',
+        'can_use_insights',
     ];
 
     /**
@@ -37,6 +48,15 @@ class Plan extends Model
     {
         return [
             'stripe_product_details' => 'array',
+            'can_use_integrations' => 'boolean',
+            'can_collaborate' => 'boolean',
+            'can_use_auto_sync' => 'boolean',
+            'can_use_smart_automation' => 'boolean',
+            'can_use_activity_logs' => 'boolean',
+            'can_use_priority_sync' => 'boolean',
+            'can_use_advanced_privacy' => 'boolean',
+            'can_share_private_links' => 'boolean',
+            'can_use_insights' => 'boolean',
         ];
     }
 

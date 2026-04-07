@@ -213,6 +213,12 @@ it('syncs stripe product events into plans using metadata tier', function () {
 
     expect($plan)->not->toBeNull();
     expect($plan?->stripe_product_id)->toBe('prod_growth_123');
+    expect($plan?->max_timelines)->toBe(10);
+    expect($plan?->storage_mb)->toBe(5120);
+    expect($plan?->can_use_integrations)->toBeTrue();
+    expect($plan?->can_share_private_links)->toBeTrue();
+    expect($plan?->can_use_auto_sync)->toBeFalse();
+    expect($plan?->can_collaborate)->toBeFalse();
     expect($plan?->stripe_product_details['name'] ?? null)->toBe('Growth');
     expect($plan?->stripe_product_details['description'] ?? null)->toBe('Growth plan product');
     expect($plan?->stripe_product_details['active'] ?? null)->toBeTrue();

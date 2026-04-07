@@ -188,10 +188,7 @@ class StripeWebhookController extends Controller
 
         if (! $plan->exists) {
             $plan->id = (string) Str::uuid();
-            [$maxUsers, $maxItems, $maxReplies] = $this->defaultLimitsForTier($tier);
-            $plan->max_users = $maxUsers;
-            $plan->max_items = $maxItems;
-            $plan->max_replies = $maxReplies;
+            $this->applyTierDefaults($plan, $tier);
         }
 
         $plan->name = (string) ($product['name'] ?? ucfirst($tier));
@@ -229,10 +226,7 @@ class StripeWebhookController extends Controller
             if (! $plan->exists) {
                 $plan->id = (string) Str::uuid();
                 $plan->name = ucfirst($tier);
-                [$maxUsers, $maxItems, $maxReplies] = $this->defaultLimitsForTier($tier);
-                $plan->max_users = $maxUsers;
-                $plan->max_items = $maxItems;
-                $plan->max_replies = $maxReplies;
+                $this->applyTierDefaults($plan, $tier);
             }
         } elseif ($productId !== '') {
             $plan = Plan::query()->where('stripe_product_id', $productId)->first();
@@ -346,16 +340,77 @@ class StripeWebhookController extends Controller
         ];
     }
 
-    /**
-     * @return array{0:int,1:int|null,2:int|null}
-     */
-    private function defaultLimitsForTier(string $tier): array
+    private function applyTierDefaults(Plan $plan, string $tier): void
     {
-        return match ($tier) {
-            'free' => [1, 50, 100],
-            'growth' => [5, 500, 2000],
-            'pro' => [20, 5000, 20000],
-            default => [1, null, null],
+        $defaults = match ($tier) {
+            'free' => [
+                'max_users' => 1,
+                'max_timelines' => 1,
+                'storage_mb' => 100,
+                'max_items' => 50,
+                'max_replies' => 100,
+                'can_use_integrations' => false,
+                'can_collaborate' => false,
+                'can_use_auto_sync' => false,
+                'can_use_smart_automation' => false,
+                'can_use_activity_logs' => false,
+                'can_use_priority_sync' => false,
+                'can_use_advanced_privacy' => false,
+                'can_share_private_links' => false,
+                'can_use_insights' => false,
+            ],
+            'growth' => [
+                'max_users' => 5,
+                'max_timelines' => 10,
+                'storage_mb' => 5120,
+                'max_items' => 500,
+                'max_replies' => 2000,
+                'can_use_integrations' => true,
+                'can_collaborate' => false,
+                'can_use_auto_sync' => false,
+                'can_use_smart_automation' => false,
+                'can_use_activity_logs' => false,
+                'can_use_priority_sync' => false,
+                'can_use_advanced_privacy' => false,
+                'can_share_private_links' => true,
+                'can_use_insights' => false,
+            ],
+            'pro' => [
+                'max_users' => 20,
+                'max_timelines' => null,
+                'storage_mb' => 51200,
+                'max_items' => 5000,
+                'max_replies' => 20000,
+                'can_use_integrations' => true,
+                'can_collaborate' => true,
+                'can_use_auto_sync' => true,
+                'can_use_smart_automation' => true,
+                'can_use_activity_logs' => true,
+                'can_use_priority_sync' => true,
+                'can_use_advanced_privacy' => true,
+                'can_share_private_links' => true,
+                'can_use_insights' => true,
+            ],
+            default => [
+                'max_users' => 1,
+                'max_timelines' => null,
+                'storage_mb' => null,
+                'max_items' => null,
+                'max_replies' => null,
+                'can_use_integrations' => false,
+                'can_collaborate' => false,
+                'can_use_auto_sync' => false,
+                'can_use_smart_automation' => false,
+                'can_use_activity_logs' => false,
+                'can_use_priority_sync' => false,
+                'can_use_advanced_privacy' => false,
+                'can_share_private_links' => false,
+                'can_use_insights' => false,
+            ],
         };
+
+        foreach ($defaults as $key => $value) {
+            $plan->{$key} = $value;
+        }
     }
 }
