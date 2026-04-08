@@ -1,5 +1,15 @@
 # GraceSoft Story Progress Log
 
+## 2026-04-08 - Milestone: Register Button Stuck UX Fix
+
+### Completed in this iteration
+- Fixed auth submit loading behavior so `data-loading-text` is applied only on real form submit, not on raw button click.
+- Prevented register/login/forgot/reset buttons from becoming permanently disabled when browser validation blocks submission.
+- Kept loading affordance for non-form actions (for example, link-based actions) unchanged.
+
+### Validation snapshot
+- Focused test run: 6 passed, 23 assertions (`AuthPagesTest`).
+
 ## 2026-04-08 - Milestone: Registration Responsiveness Fix
 
 ### Completed in this iteration

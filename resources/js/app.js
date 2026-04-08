@@ -6,24 +6,36 @@ const csrfToken = document
 
 const loadingElements = document.querySelectorAll('[data-loading-text]');
 
+const applyLoadingState = (element) => {
+	const loadingText = element.getAttribute('data-loading-text');
+
+	if (!loadingText || element.dataset.loadingApplied === 'true') {
+		return;
+	}
+
+	element.dataset.loadingApplied = 'true';
+
+	if ('disabled' in element) {
+		element.disabled = true;
+	}
+
+	element.classList.add('opacity-70', 'cursor-wait');
+
+	const textNode = element.querySelector('p, span') ?? element;
+	textNode.textContent = loadingText;
+};
+
 loadingElements.forEach((element) => {
+	if (
+		element instanceof HTMLButtonElement
+		&& element.type === 'submit'
+		&& element.closest('form')
+	) {
+		return;
+	}
+
 	element.addEventListener('click', () => {
-		const loadingText = element.getAttribute('data-loading-text');
-
-		if (!loadingText || element.dataset.loadingApplied === 'true') {
-			return;
-		}
-
-		element.dataset.loadingApplied = 'true';
-
-		if ('disabled' in element) {
-			element.disabled = true;
-		}
-
-		element.classList.add('opacity-70', 'cursor-wait');
-
-		const textNode = element.querySelector('p, span') ?? element;
-		textNode.textContent = loadingText;
+		applyLoadingState(element);
 	});
 });
 
@@ -106,6 +118,15 @@ document.addEventListener('submit', async (event) => {
 
 	if (!(form instanceof HTMLFormElement)) {
 		return;
+	}
+
+	// Apply loading state only when browser validation allows submission.
+	if (!event.defaultPrevented && form.checkValidity()) {
+		const submitter = event.submitter;
+
+		if (submitter instanceof HTMLElement && submitter.hasAttribute('data-loading-text')) {
+			applyLoadingState(submitter);
+		}
 	}
 
 	if (form.matches('[data-optimistic-attach]')) {
