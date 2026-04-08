@@ -17,7 +17,7 @@
     <main class="mx-auto flex min-h-screen w-full max-w-6xl items-center justify-center p-4 sm:p-6">
         <section class="grid w-full max-w-4xl overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm md:grid-cols-[1.1fr_minmax(0,1fr)]">
             <aside class="hidden bg-gray-900 p-8 text-white md:block">
-                <img src="{{ asset('logo.svg') }}" alt="GraceSoft Story" class="h-10 w-10 rounded-lg bg-white/10 p-1">
+                <img src="{{ asset('logo-w.svg') }}" alt="GraceSoft Story" class="h-10 w-10 rounded-lg bg-white/10 p-1">
                 <h1 class="mt-6 text-3xl font-semibold leading-tight">Write your product story from every chapter.</h1>
                 <p class="mt-3 text-sm text-gray-200">Connect your repository, label your work, and keep a clean narrative of progress.</p>
             </aside>
