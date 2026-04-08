@@ -1,5 +1,18 @@
 # GraceSoft Story Progress Log
 
+## 2026-04-08 - Milestone: Performance UX Hardening (Lazy Loading + Optimistic Labels)
+
+### Completed in this iteration
+- Added timeline fragment response mode (`?fragment=1`) to return commit-row HTML + next page URL for incremental loading.
+- Extracted timeline commit row markup into reusable partial for server-rendered append operations.
+- Added client-side lazy loading with button + intersection sentinel to fetch and append additional chapters progressively.
+- Added optimistic inline label interaction behavior in timeline rows: immediate feedback for add/remove flows with async request handling.
+- Added CSRF meta token in shared shell for enhanced fetch-based interactions.
+- Added feature test coverage for fragment payload behavior.
+
+### Validation snapshot
+- Focused test run: 10 passed, 32 assertions (`StoryTimelineTest`, `StoryChapterTest`, `CommitLabelAssignmentTest`).
+
 ## 2026-04-08 - Milestone: Full UI Surface Completion (Labels, Insights, Settings, States)
 
 ### Completed in this iteration

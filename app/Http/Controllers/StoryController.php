@@ -8,13 +8,14 @@ use App\Models\Repository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Throwable;
 
 class StoryController extends Controller
 {
-    public function timeline(Request $request, Repository $repo): View
+    public function timeline(Request $request, Repository $repo): View|JsonResponse
     {
         $user = $request->user();
 
@@ -46,7 +47,7 @@ class StoryController extends Controller
             ->orderBy('full_name')
             ->get(['id', 'name', 'full_name']);
 
-        return view('story.timeline', [
+        $viewData = [
             'repository' => $repo,
             'commits' => $commits,
             'repositories' => $repositories,
@@ -54,7 +55,18 @@ class StoryController extends Controller
             'availableLabels' => $availableLabels,
             'activeFilters' => $activeFilters,
             'isLoading' => (bool) $request->boolean('loading'),
-        ]);
+        ];
+
+        if ($request->boolean('fragment')) {
+            $html = view('story.partials.commit-rows', $viewData)->render();
+
+            return response()->json([
+                'html' => $html,
+                'nextPageUrl' => $commits->nextPageUrl(),
+            ]);
+        }
+
+        return view('story.timeline', $viewData);
     }
 
     public function chapter(Request $request, Repository $repo, Commit $commit): View

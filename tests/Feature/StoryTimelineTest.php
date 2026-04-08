@@ -122,3 +122,32 @@ it('filters timeline by author label and date range', function () {
     $response->assertSee('Add filter bar to timeline');
     $response->assertDontSee('Unrelated commit');
 });
+
+it('returns fragment payload for lazy timeline loading', function () {
+    $user = User::factory()->create();
+
+    $repository = Repository::query()->create([
+        'user_id' => $user->id,
+        'provider' => 'github',
+        'external_id' => 'r-fragment',
+        'name' => 'demo-fragment',
+        'full_name' => 'octocat/demo-fragment',
+    ]);
+
+    Commit::query()->create([
+        'repository_id' => $repository->id,
+        'sha' => 'fragment-sha-1',
+        'message' => 'Fragment payload chapter',
+        'author_name' => 'Octo Cat',
+        'committed_at' => '2026-04-08 13:00:00',
+    ]);
+
+    $response = $this->actingAs($user)
+        ->get('/story/'.$repository->id.'?fragment=1');
+
+    $response
+        ->assertOk()
+        ->assertJsonStructure(['html', 'nextPageUrl']);
+
+    expect((string) $response->json('html'))->toContain('Fragment payload chapter');
+});
