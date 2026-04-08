@@ -69,14 +69,34 @@
                 <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500">Labels</h3>
                 <div class="mt-2 flex flex-wrap gap-2">
                     @forelse ($commit->labels as $label)
-                        <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold text-white" style="background-color: {{ $label->color }}">
-                            {{ $label->name }}
-                        </span>
+                        <form method="POST" action="{{ route('story.commits.labels.detach', ['repo' => $repository, 'commit' => $commit, 'label' => $label] + array_filter($activeFilters)) }}" class="inline-flex items-center">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" data-loading-text="Removing..." class="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold text-white" style="background-color: {{ $label->color }}">
+                                {{ $label->name }}
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </form>
                     @empty
                         <p class="text-sm text-gray-600">No labels yet.</p>
                     @endforelse
                 </div>
+
+                @if ($availableLabels->isNotEmpty())
+                    <form method="POST" action="{{ route('story.commits.labels.attach', ['repo' => $repository, 'commit' => $commit] + array_filter($activeFilters)) }}" class="mt-3 flex items-center gap-2">
+                        @csrf
+                        <select name="label_id" class="rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs text-gray-700">
+                            <option value="">+ Add label</option>
+                            @foreach ($availableLabels as $label)
+                                <option value="{{ $label->id }}">{{ $label->name }}</option>
+                            @endforeach
+                        </select>
+                        <button type="submit" data-loading-text="Adding..." class="rounded-lg border border-gray-200 px-2 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50">Apply</button>
+                    </form>
+                @endif
             </section>
+
+            <a href="{{ route('story.timeline', ['repo' => $repository] + array_filter($activeFilters)) }}" class="mt-6 inline-flex items-center rounded-lg border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50">Close panel</a>
         </article>
     </x-slot:inspector>
 </x-story-shell>

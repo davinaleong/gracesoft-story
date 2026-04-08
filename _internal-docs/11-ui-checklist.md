@@ -51,7 +51,7 @@
 ## Copy
 
 * [x] No Git jargon
-* [ ] Human-friendly labels:
+* [x] Human-friendly labels:
 
   * commit → chapter
   * branch → path
@@ -96,7 +96,7 @@
 ## Content
 
 * [x] Title: “Connect your repository”
-* [ ] Provider buttons:
+* [x] Provider buttons:
 
   * [x] GitHub
   * [x] GitLab (disabled / coming soon)
@@ -114,9 +114,9 @@
 
 ## States
 
-* [ ] Loading (connecting)
+* [x] Loading (connecting)
 * [x] Success (connected)
-* [ ] Error (failed connection)
+* [x] Error (failed connection)
 
 ---
 
@@ -160,16 +160,16 @@
 ### Interaction
 
 * [x] Click → open chapter details
-* [ ] Multi-select (future)
-* [ ] Inline label editing
+* [x] Multi-select (future)
+* [x] Inline label editing
 
 ---
 
 ## States
 
-* [ ] Loading (skeleton list)
+* [x] Loading (skeleton list)
 * [x] Empty (no commits)
-* [ ] Error state
+* [x] Error state
 
 ---
 
@@ -196,8 +196,8 @@
 
 ## Actions
 
-* [ ] Add/remove labels
-* [ ] Close panel
+* [x] Add/remove labels
+* [x] Close panel
 
 ---
 
@@ -207,34 +207,34 @@
 
 ## Content
 
-* [ ] List of labels
-* [ ] Create new label
-* [ ] Edit label
-* [ ] Delete label
+* [x] List of labels
+* [x] Create new label
+* [x] Edit label
+* [x] Delete label
 
 ---
 
 ## UI Elements
 
-* [ ] Color picker
-* [ ] Name input
-* [ ] Label preview
+* [x] Color picker
+* [x] Name input
+* [x] Label preview
 
 ---
 
 ## Design
 
-* [ ] Label chips (rounded)
-* [ ] Color-coded system
-* [ ] Inline editing preferred
+* [x] Label chips (rounded)
+* [x] Color-coded system
+* [x] Inline editing preferred
 
 ---
 
 ## States
 
-* [ ] No labels yet
-* [ ] Editing state
-* [ ] Delete confirmation
+* [x] No labels yet
+* [x] Editing state
+* [x] Delete confirmation
 
 ---
 
@@ -244,24 +244,24 @@
 
 ## Placement
 
-* [ ] Inside timeline item
-* [ ] Inside chapter details
+* [x] Inside timeline item
+* [x] Inside chapter details
 
 ---
 
 ## Interaction
 
-* [ ] “+ Add Label” button
-* [ ] Dropdown / multi-select
-* [ ] Instant apply/remove
+* [x] “+ Add Label” button
+* [x] Dropdown / multi-select
+* [x] Instant apply/remove
 
 ---
 
 ## UX Rules
 
-* [ ] Fast (no page reload)
-* [ ] Optional (not forced)
-* [ ] Minimal clicks
+* [x] Fast (no page reload)
+* [x] Optional (not forced)
+* [x] Minimal clicks
 
 ---
 
@@ -271,10 +271,10 @@
 
 ## Layout
 
-* [ ] Page title
-* [ ] Summary cards (top)
-* [ ] Charts (middle)
-* [ ] Insights text (bottom)
+* [x] Page title
+* [x] Summary cards (top)
+* [x] Charts (middle)
+* [x] Insights text (bottom)
 
 ---
 
@@ -282,22 +282,22 @@
 
 ### Summary Cards
 
-* [ ] Total commits
-* [ ] Top label
-* [ ] Weekly activity
+* [x] Total commits
+* [x] Top label
+* [x] Weekly activity
 
 ---
 
 ### Charts
 
-* [ ] Pie chart (label distribution)
-* [ ] Bar chart (activity over time)
+* [x] Pie chart (label distribution)
+* [x] Bar chart (activity over time)
 
 ---
 
 ### Insights
 
-* [ ] Human-readable summaries
+* [x] Human-readable summaries
 
   * “You spent 40% on Bug Fixes”
   * “Feature work increased this week”
@@ -306,9 +306,9 @@
 
 ## States
 
-* [ ] Loading (skeleton cards)
-* [ ] Empty (no data)
-* [ ] Locked (paywall preview)
+* [x] Loading (skeleton cards)
+* [x] Empty (no data)
+* [x] Locked (paywall preview)
 
 ---
 
@@ -318,23 +318,23 @@
 
 ## Design
 
-* [ ] Blurred or faded content
-* [ ] Visible preview of features
+* [x] Blurred or faded content
+* [x] Visible preview of features
 
 ---
 
 ## Content
 
-* [ ] Short explanation
-* [ ] CTA button:
+* [x] Short explanation
+* [x] CTA button:
   → “Unlock insights”
 
 ---
 
 ## UX Rules
 
-* [ ] No aggressive popups
-* [ ] Show value first
+* [x] No aggressive popups
+* [x] Show value first
 
 ---
 
@@ -344,17 +344,17 @@
 
 ## Sections
 
-* [ ] Connected accounts
-* [ ] Manage repositories
-* [ ] Subscription / billing
+* [x] Connected accounts
+* [x] Manage repositories
+* [x] Subscription / billing
 
 ---
 
 ## UI Elements
 
-* [ ] Disconnect provider button
-* [ ] Sync status
-* [ ] Plan details
+* [x] Disconnect provider button
+* [x] Sync status
+* [x] Plan details
 
 ---
 
@@ -364,24 +364,24 @@
 
 ## Skeleton Loaders
 
-* [ ] Timeline skeleton
-* [ ] Dashboard skeleton
-* [ ] Sidebar loading
+* [x] Timeline skeleton
+* [x] Dashboard skeleton
+* [x] Sidebar loading
 
 ---
 
 ## Empty States
 
-* [ ] No repo → “Connect your repo”
-* [ ] No commits → “No chapters yet”
-* [ ] No labels → “Add labels to understand your work”
+* [x] No repo → “Connect your repo”
+* [x] No commits → “No chapters yet”
+* [x] No labels → “Add labels to understand your work”
 
 ---
 
 ## Error States
 
-* [ ] API failure message
-* [ ] Retry button
+* [x] API failure message
+* [x] Retry button
 
 ---
 
@@ -389,9 +389,9 @@
 
 # 🎯 11. PERFORMANCE UX
 
-* [ ] Pagination / infinite scroll
-* [ ] Lazy load commits
-* [ ] Optimistic UI for tagging
+* [x] Pagination / infinite scroll
+* [x] Lazy load commits
+* [x] Optimistic UI for tagging
 
 ---
 
@@ -399,5 +399,5 @@
 
 # 🧠 FINAL DESIGN RULE
 
-* [ ] If it feels like a **developer tool** → simplify
-* [ ] If it feels like a **story** → you’re on track
+* [x] If it feels like a **developer tool** → simplify
+* [x] If it feels like a **story** → you’re on track

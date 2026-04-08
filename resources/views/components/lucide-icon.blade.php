@@ -50,6 +50,17 @@
             <path d="M18 9a9 9 0 0 1-9 9" />
             @break
 
+        @case('tag')
+            <path d="M20.6 13.4 11 3.8a2 2 0 0 0-1.4-.6H4a2 2 0 0 0-2 2v5.6a2 2 0 0 0 .6 1.4l9.6 9.6a2 2 0 0 0 2.8 0l5.6-5.6a2 2 0 0 0 0-2.8z" />
+            <circle cx="7.5" cy="7.5" r="1.2" />
+            @break
+
+        @case('bar-chart')
+            <line x1="12" x2="12" y1="20" y2="10" />
+            <line x1="18" x2="18" y1="20" y2="4" />
+            <line x1="6" x2="6" y1="20" y2="14" />
+            @break
+
         @default
             <circle cx="12" cy="12" r="9" />
     @endswitch

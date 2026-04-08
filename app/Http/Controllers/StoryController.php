@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
+use Throwable;
 
 class StoryController extends Controller
 {
@@ -52,6 +53,7 @@ class StoryController extends Controller
             'availableAuthors' => $availableAuthors,
             'availableLabels' => $availableLabels,
             'activeFilters' => $activeFilters,
+            'isLoading' => (bool) $request->boolean('loading'),
         ]);
     }
 
@@ -73,6 +75,14 @@ class StoryController extends Controller
             ->orderBy('full_name')
             ->get(['id', 'name', 'full_name']);
 
+        $availableLabels = Label::query()
+            ->where('user_id', $user->id)
+            ->whereHas('commits', static function (Builder $query) use ($repo): void {
+                $query->where('repository_id', $repo->id);
+            })
+            ->orderBy('name')
+            ->get(['id', 'name', 'color']);
+
         $commit->load('labels');
 
         return view('story.chapter', [
@@ -81,6 +91,7 @@ class StoryController extends Controller
             'commits' => $commits,
             'repositories' => $repositories,
             'activeFilters' => $activeFilters,
+            'availableLabels' => $availableLabels,
         ]);
     }
 
@@ -120,14 +131,31 @@ class StoryController extends Controller
                 });
             })
             ->when($filters['from'] !== '', function (Builder $query) use ($filters): void {
-                $from = Carbon::parse($filters['from'])->startOfDay();
-                $query->where('committed_at', '>=', $from);
+                $from = $this->safeDate($filters['from'], true);
+
+                if ($from !== null) {
+                    $query->where('committed_at', '>=', $from);
+                }
             })
             ->when($filters['to'] !== '', function (Builder $query) use ($filters): void {
-                $to = Carbon::parse($filters['to'])->endOfDay();
-                $query->where('committed_at', '<=', $to);
+                $to = $this->safeDate($filters['to'], false);
+
+                if ($to !== null) {
+                    $query->where('committed_at', '<=', $to);
+                }
             })
             ->orderByDesc('committed_at')
             ->orderByDesc('id');
+    }
+
+    private function safeDate(string $value, bool $startOfDay): ?Carbon
+    {
+        try {
+            $date = Carbon::parse($value);
+
+            return $startOfDay ? $date->startOfDay() : $date->endOfDay();
+        } catch (Throwable) {
+            return null;
+        }
     }
 }

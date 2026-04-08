@@ -6,6 +6,7 @@ use App\Http\Controllers\NotificationCenterController;
 use App\Http\Controllers\StoryController;
 use App\Http\Controllers\CommitLabelController;
 use App\Http\Controllers\SyncController;
+use App\Http\Controllers\WorkspaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +49,9 @@ Route::get('/story/{repo}/chapter/{commit}', [StoryController::class, 'chapter']
 Route::post('/labels', [LabelController::class, 'store'])
     ->name('labels.store');
 
+Route::get('/labels/manage', [WorkspaceController::class, 'labels'])
+    ->name('labels.manage');
+
 Route::patch('/labels/{label}', [LabelController::class, 'update'])
     ->name('labels.update');
 
@@ -71,3 +75,9 @@ Route::post('/notifications/{id}/read', [NotificationCenterController::class, 'm
 
 Route::post('/notifications/read-all', [NotificationCenterController::class, 'markAllRead'])
     ->name('notifications.read-all');
+
+Route::get('/insights', [WorkspaceController::class, 'insights'])
+    ->name('insights.index');
+
+Route::get('/settings', [WorkspaceController::class, 'settings'])
+    ->name('settings.index');

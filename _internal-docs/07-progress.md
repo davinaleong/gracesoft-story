@@ -1,5 +1,27 @@
 # GraceSoft Story Progress Log
 
+## 2026-04-08 - Milestone: Full UI Surface Completion (Labels, Insights, Settings, States)
+
+### Completed in this iteration
+- Added dedicated workspace UI pages and routes for `labels`, `insights`, and `settings`.
+- Implemented labels management page with create/edit/delete, color picker, label preview chips, and empty/edit/delete states.
+- Added inline label tagging controls directly in timeline rows and chapter inspector (attach and remove actions).
+- Added timeline chapter multi-select controls and bulk-apply affordance for label workflows.
+- Implemented insights dashboard UI: summary cards, label distribution chart, activity chart, and readable insight summaries.
+- Implemented paywall/locked UI treatment with blurred preview, explanation copy, and unlock CTA.
+- Implemented settings UI sections for connected account management, repository sync controls, and plan details.
+- Added reusable loading and state UX: global status/error banners, retry action, skeleton loaders, sidebar loading placeholders, and loading-button behavior.
+- Expanded icon set and navigation routing for labels/insights/settings in shared sidebar.
+- Added feature tests for workspace pages and reran timeline/chapter/label flows.
+
+### Current architecture status
+- All primary checklist UI surfaces now exist as actual routes/views using the shared `story-shell` and reusable components.
+- UI is mobile-first, responsive, and centered on reusable Blade components/partials with consistent Notes-inspired styling.
+- Labeling and page-state interactions are now integrated with existing backend endpoints.
+
+### Validation snapshot
+- Focused test run: 14 passed, 49 assertions (`StoryTimelineTest`, `StoryChapterTest`, `LabelCrudTest`, `CommitLabelAssignmentTest`, `WorkspacePagesTest`).
+
 ## 2026-04-08 - Milestone: Mobile-First Timeline Filters (Author/Label/Date)
 
 ### Completed in this iteration

@@ -8,15 +8,9 @@
         <h1 class="mt-2 text-2xl font-semibold text-gray-900 sm:text-3xl">Connect your repository</h1>
         <p class="mt-2 max-w-2xl text-sm text-gray-600">Start your story by connecting a repository. Once connected, each commit becomes a chapter you can explore and tag.</p>
 
-        @if (session('status'))
-            <div class="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
-                {{ session('status') }}
-            </div>
-        @endif
-
         <div class="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
             @auth
-                <a href="{{ route('auth.github.redirect') }}" class="gs-interactive rounded-xl border border-sky-200 bg-sky-50 px-4 py-4 shadow-sm hover:border-sky-300 hover:bg-sky-100">
+                <a href="{{ route('auth.github.redirect') }}" data-loading-text="Connecting..." class="gs-interactive rounded-xl border border-sky-200 bg-sky-50 px-4 py-4 shadow-sm hover:border-sky-300 hover:bg-sky-100">
                     <x-lucide-icon name="github" class="h-5 w-5 text-sky-700" />
                     <p class="text-sm font-semibold text-sky-800">GitHub</p>
                     <p class="mt-1 text-xs text-sky-700">Connect now</p>
