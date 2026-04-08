@@ -7,7 +7,6 @@ use App\Http\Controllers\StoryController;
 use App\Http\Controllers\CommitLabelController;
 use App\Http\Controllers\SyncController;
 use App\Http\Controllers\WorkspaceController;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -109,9 +108,12 @@ Route::middleware('guest')->group(function (): void {
             'password' => $validated['password'],
         ]);
 
-        event(new Registered($user));
-
         Auth::login($user);
+
+        // Send verification after the response so registration feels instant.
+        dispatch(function () use ($user): void {
+            $user->sendEmailVerificationNotification();
+        })->afterResponse();
 
         return redirect()->route('verification.notice');
     });

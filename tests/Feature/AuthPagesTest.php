@@ -13,9 +13,7 @@ it('shows auth entry pages to guests', function () {
     $this->get('/forgot-password')->assertOk()->assertSee('Forgot password');
 });
 
-it('registers a user and sends verification email', function () {
-    Notification::fake();
-
+it('registers a user and redirects to verification notice', function () {
     $response = $this->post('/register', [
         'name' => 'Auth User',
         'email' => 'auth@example.com',
@@ -29,6 +27,16 @@ it('registers a user and sends verification email', function () {
 
     expect($user)->not->toBeNull();
     $this->assertAuthenticatedAs($user);
+});
+
+it('resends verification email from verification notice page', function () {
+    Notification::fake();
+
+    $user = User::factory()->unverified()->create();
+
+    $response = $this->actingAs($user)->post('/email/verification-notification');
+
+    $response->assertSessionHas('status', 'Verification link sent.');
 
     Notification::assertSentTo($user, VerifyEmail::class);
 });

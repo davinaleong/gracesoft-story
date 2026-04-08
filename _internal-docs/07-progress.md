@@ -1,5 +1,15 @@
 # GraceSoft Story Progress Log
 
+## 2026-04-08 - Milestone: Registration Responsiveness Fix
+
+### Completed in this iteration
+- Updated the register POST flow to log users in and redirect immediately, then send email verification after the response.
+- Prevented mail transport latency from blocking the registration request path.
+- Added explicit feature coverage for resending verification email from the verification notice page.
+
+### Validation snapshot
+- Focused test run: 6 passed, 23 assertions (`AuthPagesTest`).
+
 ## 2026-04-08 - Milestone: Sky Primary CTA Pass
 
 ### Completed in this iteration
