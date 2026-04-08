@@ -1,5 +1,16 @@
 # GraceSoft Story Progress Log
 
+## 2026-04-08 - Milestone: Sky Primary CTA Pass
+
+### Completed in this iteration
+- Added reusable `.gs-btn-primary` utility in shared stylesheet using sky-600/sky-700 states and white text for stronger contrast.
+- Migrated main call-to-action buttons and links across auth, welcome, timeline filters, and workspace pages to use the shared primary CTA class.
+- Kept non-button dark surfaces unchanged (for example, auth hero panel) to avoid unintended visual regressions.
+
+### Validation snapshot
+- Searched Blade templates to verify no remaining legacy primary button class string (`bg-gray-900 ... hover:bg-gray-800`) on CTAs.
+- Focused test command run: `php artisan test --filter="AuthPagesTest|WelcomeConnectUiTest|WorkspacePagesTest"`.
+
 ## 2026-04-08 - Milestone: Full App Login Gating
 
 ### Completed in this iteration

@@ -11,7 +11,7 @@
         @guest
             <div class="mt-4 flex flex-wrap items-center gap-2">
                 <a href="{{ route('login') }}" class="inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Sign in</a>
-                <a href="{{ route('register') }}" class="inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">Create account</a>
+                <a href="{{ route('register') }}" class="gs-btn-primary">Create account</a>
             </div>
         @endguest
 
@@ -59,7 +59,7 @@
                             <button type="submit" data-loading-text="Disconnecting..." class="inline-flex items-center rounded-lg border border-rose-200 px-4 py-2 text-sm font-medium text-rose-700 hover:bg-rose-50">Disconnect GitHub</button>
                         </form>
                     @else
-                        <a href="{{ route('auth.github.redirect') }}" data-loading-text="Connecting..." class="inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">Connect GitHub</a>
+                        <a href="{{ route('auth.github.redirect') }}" data-loading-text="Connecting..." class="gs-btn-primary">Connect GitHub</a>
                     @endif
                 </div>
             @else
@@ -71,7 +71,7 @@
             <div class="mt-6 rounded-xl border border-gray-200 bg-gray-50 p-4">
                 <p class="text-sm font-medium text-gray-900">GitHub connected</p>
                 <p class="mt-1 text-sm text-gray-600">You can jump to your first repository timeline now.</p>
-                <a href="{{ route('story.timeline', $repositories->first()) }}" class="mt-3 inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">Open timeline</a>
+                <a href="{{ route('story.timeline', $repositories->first()) }}" class="gs-btn-primary mt-3">Open timeline</a>
             </div>
         @endif
     </section>

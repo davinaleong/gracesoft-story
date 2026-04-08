@@ -56,7 +56,7 @@
     }
 
     .gs-sidebar {
-        @apply border-b border-gray-200 bg-gray-100/95 p-4 backdrop-blur-sm lg:sticky lg:top-0 lg:h-screen lg:border-r lg:border-b-0 lg:p-6;
+        @apply border-b border-sky-100 bg-gray-100/95 p-4 backdrop-blur-sm lg:sticky lg:top-0 lg:h-screen lg:border-r lg:border-b-0 lg:p-6;
     }
 
     .gs-main {
@@ -69,6 +69,7 @@
 
     .gs-panel {
         @apply rounded-xl border border-gray-200 bg-white shadow-sm;
+        box-shadow: 0 1px 2px rgba(2, 132, 199, 0.08);
     }
 
     .gs-interactive {
@@ -95,6 +96,14 @@
         @apply text-sm text-gray-500;
     }
 
+    .gs-btn-primary {
+        @apply inline-flex items-center justify-center rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-sky-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500;
+    }
+
+    .gs-note-meta span {
+        @apply text-sky-500;
+    }
+
     .gs-skeleton {
         @apply bg-linear-to-r from-gray-100 via-gray-200 to-gray-100;
         animation: gs-pulse 1.35s ease-in-out infinite;
@@ -107,5 +116,10 @@
 
     .gs-paywall-overlay {
         background-image: linear-gradient(180deg, rgba(224, 242, 254, 0.5) 0%, rgba(249, 250, 251, 0.75) 100%);
+    }
+
+    .gs-sidebar nav a.bg-sky-50,
+    .gs-sidebar nav a:hover {
+        border-color: rgb(14 165 233 / 0.35);
     }
 }

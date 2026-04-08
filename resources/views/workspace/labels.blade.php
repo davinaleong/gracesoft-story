@@ -61,7 +61,7 @@
                     Color
                     <input type="color" name="color" value="#0ea5e9" class="mt-1 h-10 w-full cursor-pointer rounded-lg border border-gray-200 bg-white px-2 py-1">
                 </label>
-                <button type="submit" data-loading-text="Creating..." class="inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">Create label</button>
+                <button type="submit" data-loading-text="Creating..." class="gs-btn-primary">Create label</button>
             </form>
         </aside>
     </section>

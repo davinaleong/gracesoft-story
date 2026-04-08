@@ -21,7 +21,7 @@
             <input type="password" name="password_confirmation" required class="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-800">
         </label>
 
-        <button type="submit" data-loading-text="Creating account..." class="w-full rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">Create account</button>
+        <button type="submit" data-loading-text="Creating account..." class="gs-btn-primary w-full">Create account</button>
     </form>
 
     <p class="mt-4 text-sm text-gray-600">

@@ -6,6 +6,6 @@
             <input type="password" name="password" required autofocus class="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-800">
         </label>
 
-        <button type="submit" data-loading-text="Confirming..." class="w-full rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">Confirm password</button>
+        <button type="submit" data-loading-text="Confirming..." class="gs-btn-primary w-full">Confirm password</button>
     </form>
 </x-auth-shell>

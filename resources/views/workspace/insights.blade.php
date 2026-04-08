@@ -23,7 +23,7 @@
                 <p class="text-xs font-semibold uppercase tracking-wider text-sky-700">Locked feature preview</p>
                 <h2 class="mt-2 text-xl font-semibold text-gray-900">Insights are available on paid plans</h2>
                 <p class="mt-2 text-sm text-gray-700">You can still preview the dashboard layout below. Upgrade to unlock live metrics and richer insights.</p>
-                <a href="{{ route('settings.index') }}" class="mt-4 inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">Unlock insights</a>
+                <a href="{{ route('settings.index') }}" class="gs-btn-primary mt-4">Unlock insights</a>
             </div>
         </section>
     @endif

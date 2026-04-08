@@ -62,7 +62,7 @@
             </label>
 
             <div class="flex items-center gap-2 sm:col-span-2 lg:col-span-4">
-                <button type="submit" class="inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">Apply filters</button>
+                <button type="submit" class="gs-btn-primary">Apply filters</button>
                 <a href="{{ route('story.timeline', $repository) }}" class="inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Clear</a>
             </div>
         </form>

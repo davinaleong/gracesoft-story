@@ -16,7 +16,7 @@
             Remember me
         </label>
 
-        <button type="submit" data-loading-text="Signing in..." class="w-full rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">Sign in</button>
+        <button type="submit" data-loading-text="Signing in..." class="gs-btn-primary w-full">Sign in</button>
     </form>
 
     <div class="mt-4 flex flex-wrap items-center justify-between gap-2 text-sm">

@@ -44,7 +44,7 @@
             <p class="mt-2 text-sm text-gray-600">Trigger a manual sync to fetch newest chapters from your providers.</p>
             <form method="POST" action="{{ route('sync.github.refresh') }}" class="mt-3">
                 @csrf
-                <button type="submit" data-loading-text="Queueing sync..." class="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">Sync now</button>
+                <button type="submit" data-loading-text="Queueing sync..." class="gs-btn-primary">Sync now</button>
             </form>
             <div class="mt-4 space-y-2 text-xs text-gray-500">
                 @forelse ($repositories->take(5) as $repo)
