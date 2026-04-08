@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chapter {{ substr($commit->sha, 0, 7) }}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('logo.svg') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="gs-page">
