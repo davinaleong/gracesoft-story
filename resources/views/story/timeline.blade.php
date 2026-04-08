@@ -16,12 +16,70 @@
         </div>
     @endif
 
+    <section class="gs-panel mt-4 p-4 sm:p-5">
+        <form method="GET" action="{{ route('story.timeline', $repository) }}" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <label class="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                Author
+                <input
+                    type="text"
+                    name="author"
+                    value="{{ $activeFilters['author'] }}"
+                    placeholder="Name or email"
+                    list="author-suggestions"
+                    class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-normal text-gray-800 outline-none ring-sky-200 transition focus:border-sky-300 focus:ring"
+                >
+                <datalist id="author-suggestions">
+                    @foreach ($availableAuthors as $authorName)
+                        <option value="{{ $authorName }}"></option>
+                    @endforeach
+                </datalist>
+            </label>
+
+            <label class="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                Label
+                <select name="label_id" class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-normal text-gray-800 outline-none ring-sky-200 transition focus:border-sky-300 focus:ring">
+                    <option value="">All labels</option>
+                    @foreach ($availableLabels as $label)
+                        <option value="{{ $label->id }}" @selected((string) $label->id === $activeFilters['label_id'])>
+                            {{ $label->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </label>
+
+            <label class="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                From
+                <input
+                    type="date"
+                    name="from"
+                    value="{{ $activeFilters['from'] }}"
+                    class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-normal text-gray-800 outline-none ring-sky-200 transition focus:border-sky-300 focus:ring"
+                >
+            </label>
+
+            <label class="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                To
+                <input
+                    type="date"
+                    name="to"
+                    value="{{ $activeFilters['to'] }}"
+                    class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-normal text-gray-800 outline-none ring-sky-200 transition focus:border-sky-300 focus:ring"
+                >
+            </label>
+
+            <div class="flex items-center gap-2 sm:col-span-2 lg:col-span-4">
+                <button type="submit" class="inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">Apply filters</button>
+                <a href="{{ route('story.timeline', $repository) }}" class="inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Clear</a>
+            </div>
+        </form>
+    </section>
+
     <section class="gs-notes-list mt-4 sm:mt-5">
         @forelse ($commits as $commit)
             <article class="gs-note-row gs-interactive gs-fade-up" style="animation-delay: {{ min($loop->index * 35, 260) }}ms;">
                 <div class="flex items-start justify-between gap-4">
                     <div>
-                        <a href="{{ route('story.chapter', ['repo' => $repository, 'commit' => $commit]) }}" class="text-base font-semibold leading-tight text-gray-900 hover:text-sky-700">
+                        <a href="{{ route('story.chapter', ['repo' => $repository, 'commit' => $commit] + array_filter($activeFilters)) }}" class="text-base font-semibold leading-tight text-gray-900 hover:text-sky-700">
                             {{ $commit->message }}
                         </a>
                         <p class="gs-note-meta mt-1">

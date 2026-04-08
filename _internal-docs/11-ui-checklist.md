@@ -134,7 +134,7 @@
 
 * [x] Page title (repo name)
 * [x] Timeline list (vertical)
-* [ ] Optional filters (top)
+* [x] Optional filters (top)
 
 ---
 

@@ -75,3 +75,27 @@ it('returns not found for chapter route when commit is from another repository',
 
     $response->assertNotFound();
 });
+
+it('preserves active timeline filters in chapter back link', function () {
+    $user = User::factory()->create();
+
+    $repo = Repository::query()->create([
+        'user_id' => $user->id,
+        'provider' => 'github',
+        'external_id' => 'repo-filter-preserve',
+        'name' => 'repo-filter-preserve',
+    ]);
+
+    $commit = Commit::query()->create([
+        'repository_id' => $repo->id,
+        'sha' => 'sha-preserve-1',
+        'message' => 'Preserve filters in chapter view',
+        'committed_at' => '2026-04-08 12:00:00',
+    ]);
+
+    $response = $this->actingAs($user)
+        ->get('/story/'.$repo->id.'/chapter/'.$commit->id.'?author=Octo&from=2026-04-01&to=2026-04-30');
+
+    $response->assertOk();
+    $response->assertSee('/story/'.$repo->id.'?author=Octo&amp;from=2026-04-01&amp;to=2026-04-30', false);
+});

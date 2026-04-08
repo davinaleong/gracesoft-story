@@ -5,7 +5,7 @@
     active-nav="chapter"
 >
     <header class="gs-panel p-5 sm:p-6">
-        <a href="{{ route('story.timeline', $repository) }}" class="text-sm font-medium text-sky-700 hover:text-sky-800">← Back to timeline</a>
+        <a href="{{ route('story.timeline', ['repo' => $repository] + array_filter($activeFilters)) }}" class="text-sm font-medium text-sky-700 hover:text-sky-800">← Back to timeline</a>
         <h1 class="mt-3 text-2xl font-semibold text-gray-900">{{ $repository->full_name ?: $repository->name }}</h1>
         <p class="mt-1 text-sm text-gray-600">Open chapters stay in context while the inspector shows full details.</p>
     </header>
@@ -15,7 +15,7 @@
             <article class="gs-note-row gs-interactive {{ $timelineCommit->id === $commit->id ? 'bg-sky-50' : '' }}">
                 <div class="flex items-start justify-between gap-4">
                     <div>
-                        <a href="{{ route('story.chapter', ['repo' => $repository, 'commit' => $timelineCommit]) }}" class="text-base font-semibold leading-tight {{ $timelineCommit->id === $commit->id ? 'text-sky-800' : 'text-gray-900 hover:text-sky-700' }}">
+                        <a href="{{ route('story.chapter', ['repo' => $repository, 'commit' => $timelineCommit] + array_filter($activeFilters)) }}" class="text-base font-semibold leading-tight {{ $timelineCommit->id === $commit->id ? 'text-sky-800' : 'text-gray-900 hover:text-sky-700' }}">
                             {{ $timelineCommit->message }}
                         </a>
                         <p class="gs-note-meta mt-1">

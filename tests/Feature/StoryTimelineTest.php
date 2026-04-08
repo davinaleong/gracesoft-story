@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Commit;
+use App\Models\Label;
 use App\Models\Repository;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -67,4 +68,57 @@ it('requires authentication for story timeline', function () {
     $response = $this->get('/story/'.$repository->id);
 
     $response->assertStatus(401);
+});
+
+it('filters timeline by author label and date range', function () {
+    $user = User::factory()->create();
+
+    $repository = Repository::query()->create([
+        'user_id' => $user->id,
+        'provider' => 'github',
+        'external_id' => 'r-filter',
+        'name' => 'demo-filter',
+        'full_name' => 'octocat/demo-filter',
+    ]);
+
+    $targetCommit = Commit::query()->create([
+        'repository_id' => $repository->id,
+        'sha' => 'target-sha-1',
+        'message' => 'Add filter bar to timeline',
+        'author_name' => 'Octo Cat',
+        'author_email' => 'octo@example.com',
+        'committed_at' => '2026-04-08 10:00:00',
+        'branch' => 'main',
+    ]);
+
+    $otherCommit = Commit::query()->create([
+        'repository_id' => $repository->id,
+        'sha' => 'other-sha-2',
+        'message' => 'Unrelated commit',
+        'author_name' => 'Jane Dev',
+        'author_email' => 'jane@example.com',
+        'committed_at' => '2026-03-01 10:00:00',
+        'branch' => 'main',
+    ]);
+
+    $targetLabel = Label::query()->create([
+        'user_id' => $user->id,
+        'name' => 'Feature',
+        'color' => '#0ea5e9',
+    ]);
+
+    $otherLabel = Label::query()->create([
+        'user_id' => $user->id,
+        'name' => 'Fix',
+        'color' => '#10b981',
+    ]);
+
+    $targetCommit->labels()->attach($targetLabel->id);
+    $otherCommit->labels()->attach($otherLabel->id);
+
+    $response = $this->actingAs($user)->get('/story/'.$repository->id.'?author=Octo&label_id='.$targetLabel->id.'&from=2026-04-01&to=2026-04-30');
+
+    $response->assertOk();
+    $response->assertSee('Add filter bar to timeline');
+    $response->assertDontSee('Unrelated commit');
 });

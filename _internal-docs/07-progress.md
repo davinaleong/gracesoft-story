@@ -1,5 +1,22 @@
 # GraceSoft Story Progress Log
 
+## 2026-04-08 - Milestone: Mobile-First Timeline Filters (Author/Label/Date)
+
+### Completed in this iteration
+- Added filter query support to story timeline and chapter list context for `author`, `label_id`, `from`, and `to`.
+- Implemented reusable filter parsing + query composition inside `StoryController` for consistent filtering behavior.
+- Added mobile-first filter bar UI above timeline list with text, select, date controls, and clear action.
+- Added author suggestion datalist sourced from existing repository commit authors.
+- Preserved active filters when navigating timeline -> chapter and chapter -> timeline.
+- Added feature test coverage for filtering and filter-state preservation.
+
+### Current architecture status
+- Timeline now supports lightweight exploratory filtering without leaving the page.
+- Filter state is URL-driven and pagination-safe (`withQueryString`), enabling shareable filtered views.
+
+### Validation snapshot
+- Focused test run: 7 passed, 18 assertions (`StoryTimelineTest`, `StoryChapterTest`).
+
 ## 2026-04-08 - Milestone: Lucide Icon Pass (Navigation + Providers)
 
 ### Completed in this iteration
