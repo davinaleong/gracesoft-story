@@ -96,6 +96,33 @@
                 @endif
             </section>
 
+            @php
+                $changeLines = collect(preg_split('/\r\n|\r|\n/', (string) $commit->message))
+                    ->map(static fn (?string $line): string => trim((string) $line))
+                    ->filter(static fn (string $line): bool => $line !== '')
+                    ->values();
+            @endphp
+
+            <section class="mt-6">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500">Changes</h3>
+
+                @if ($changeLines->isNotEmpty())
+                    <ul class="mt-2 space-y-2 text-sm text-gray-700">
+                        @foreach ($changeLines as $line)
+                            <li class="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">
+                                {{ $line }}
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <p class="mt-2 text-sm text-gray-600">No explicit change summary was provided for this chapter.</p>
+                @endif
+
+                <p class="mt-2 text-xs text-gray-500">
+                    Path context: {{ $commit->branch ?: 'N/A' }}
+                </p>
+            </section>
+
             <a href="{{ route('story.timeline', ['repo' => $repository] + array_filter($activeFilters)) }}" class="mt-6 inline-flex items-center rounded-lg border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50">Close panel</a>
         </article>
     </x-slot:inspector>

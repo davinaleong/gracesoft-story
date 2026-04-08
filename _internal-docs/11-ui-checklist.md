@@ -183,7 +183,7 @@
 * [x] Author + email
 * [x] Date/time
 * [x] Labels
-* [ ] Changes (optional MVP skip)
+* [x] Changes (optional MVP skip)
 
 ---
 

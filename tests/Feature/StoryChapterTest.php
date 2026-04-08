@@ -42,6 +42,7 @@ it('shows chapter detail for owned repository commit including labels', function
     $response->assertOk();
     $response->assertSee('Chapter Details');
     $response->assertSee('Build chapter detail');
+    $response->assertSee('Changes');
     $response->assertSee('sha-chapter-1');
     $response->assertSee('Refactor');
 });

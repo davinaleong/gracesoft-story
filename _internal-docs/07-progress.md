@@ -1,5 +1,17 @@
 # GraceSoft Story Progress Log
 
+## 2026-04-08 - Milestone: Chapter Changes Section (Final Checklist Closure)
+
+### Completed in this iteration
+- Implemented a dedicated `Changes` section inside chapter inspector details.
+- Added message-derived change line rendering with clear fallback copy when explicit lines are unavailable.
+- Added path context line to keep chapter-level change context visible.
+- Updated chapter feature test coverage to assert `Changes` section visibility.
+- Marked the final remaining UI checklist item as complete.
+
+### Validation snapshot
+- Focused test run passed for chapter/timeline flows (including updated chapter assertion).
+
 ## 2026-04-08 - Milestone: Performance UX Hardening (Lazy Loading + Optimistic Labels)
 
 ### Completed in this iteration
