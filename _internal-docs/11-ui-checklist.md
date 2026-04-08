@@ -4,11 +4,12 @@
 
 # Design Inspiration
 
-* Pre-glass MacOS UI
+* ~~Pre-glass MacOS UI~~ iPhone Notes app
 * Black
 * White
 * Tailwind Gray spectrum
 * Tailwind Sky as accent
+* Lucide icons
 
 ---
 

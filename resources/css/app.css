@@ -11,9 +11,9 @@
 }
 
 :root {
-    --gs-bg: #f8fafc;
+    --gs-bg: #f9fafb;
     --gs-panel: #ffffff;
-    --gs-panel-soft: #f3f4f6;
+    --gs-panel-soft: #f5f5f7;
     --gs-border: #e5e7eb;
     --gs-text: #111827;
     --gs-muted: #6b7280;
@@ -36,8 +36,8 @@
 @layer components {
     .gs-page {
         @apply min-h-screen bg-gray-50 text-gray-900;
-        background-image: radial-gradient(circle at 10% 0%, #e0f2fe 0%, transparent 35%),
-            radial-gradient(circle at 90% 100%, #f3f4f6 0%, transparent 45%);
+        background-image: radial-gradient(circle at 8% -12%, #e0f2fe 0%, transparent 40%),
+            radial-gradient(circle at 95% 108%, #f3f4f6 0%, transparent 48%);
     }
 
     .gs-shell {
@@ -57,7 +57,7 @@
     }
 
     .gs-panel {
-        @apply rounded-lg border border-gray-200 bg-white shadow-sm;
+        @apply rounded-xl border border-gray-200 bg-white shadow-sm;
     }
 
     .gs-interactive {
@@ -70,5 +70,17 @@
 
     .gs-fade-up {
         animation: gs-rise 280ms ease-out both;
+    }
+
+    .gs-notes-list {
+        @apply divide-y divide-gray-200 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm;
+    }
+
+    .gs-note-row {
+        @apply px-4 py-3 sm:px-5;
+    }
+
+    .gs-note-meta {
+        @apply text-sm text-gray-500;
     }
 }

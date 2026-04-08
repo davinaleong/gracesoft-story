@@ -1,5 +1,23 @@
 # GraceSoft Story Progress Log
 
+## 2026-04-08 - Milestone: iPhone Notes-Inspired UI Refactor (Reusable Shell + Mobile-First)
+
+### Completed in this iteration
+- Added reusable Blade shell component (`story-shell`) to centralize page structure, head metadata, favicon, and shared sidebar/inspector slots.
+- Extracted sidebar into reusable partial (`story-sidebar`) and wired active nav states (`connect`, `timeline`, `chapter`) across story pages.
+- Refactored `welcome`, `story.timeline`, and `story.chapter` views to consume the shared shell and reduce duplicated layout markup.
+- Introduced reusable Notes-style list classes (`gs-notes-list`, `gs-note-row`, `gs-note-meta`) and applied them to timeline/chapter list rendering.
+- Improved mobile-first behavior by tightening spacing and typography defaults for small screens, while preserving larger-screen three-column shell.
+- Updated visual tokens to better match the iPhone Notes-inspired direction (soft neutral surfaces, subtle sky accent atmosphere).
+
+### Current architecture status
+- Story UI now has a reusable page composition pattern: shell component + sidebar partial + per-page content/inspector slots.
+- Core pages remain functionally equivalent but are now easier to iterate, extend, and keep visually consistent.
+- Responsive behavior and list styling are now centrally managed via shared CSS component classes.
+
+### Validation snapshot
+- IDE diagnostics: no errors in touched Blade/CSS files.
+
 ## 2026-04-07 - Milestone: UI Foundations (Shell, Connect, Timeline, Inspector)
 
 ### Completed in this iteration
