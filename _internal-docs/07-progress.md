@@ -1,5 +1,17 @@
 # GraceSoft Story Progress Log
 
+## 2026-04-08 - Milestone: Verification Email Branding Pass
+
+### Completed in this iteration
+- Added local Laravel mail overrides for HTML header and default theme.
+- Updated email outer header area to sky-600 and set header text to white for contrast.
+- Updated email action button (`Verify Email Address`) primary color to sky-600.
+- Normalized brand casing to `GraceSoft Story` in `.env` (local) and `.env.example` (project default).
+
+### Validation snapshot
+- Cleared config cache (`php artisan config:clear`) to ensure new values are active.
+- Focused test run: 6 passed, 23 assertions (`AuthPagesTest`).
+
 ## 2026-04-08 - Milestone: Register Button Stuck UX Fix
 
 ### Completed in this iteration
