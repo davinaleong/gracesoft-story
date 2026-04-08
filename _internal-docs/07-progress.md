@@ -1,5 +1,16 @@
 # GraceSoft Story Progress Log
 
+## 2026-04-08 - Milestone: Full App Login Gating
+
+### Completed in this iteration
+- Applied `auth` middleware gate to the entire app shell surface, including `/` and all primary workspace/story routes.
+- Guests now route directly to `/login` instead of rendering app shell with left/right sidebars.
+- Updated feature tests to assert redirect-to-login behavior for unauthenticated requests on gated routes.
+- Added explicit regression test to ensure guests cannot see app shell on `/`.
+
+### Validation snapshot
+- Focused test run: 15 passed, 51 assertions (`WelcomeConnectUiTest`, `StoryTimelineTest`, `SyncControllerTest`, `AuthPagesTest`).
+
 ## 2026-04-08 - Milestone: Auth UI and Flow Implementation
 
 ### Completed in this iteration

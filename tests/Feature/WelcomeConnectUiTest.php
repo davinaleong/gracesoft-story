@@ -31,3 +31,9 @@ it('shows disconnect github action when account is connected', function () {
     $response->assertSee('Disconnect GitHub');
     $response->assertSee('Connected to GitHub');
 });
+
+it('redirects guests to login instead of rendering app shell', function () {
+    $response = $this->get('/');
+
+    $response->assertRedirect('/login');
+});

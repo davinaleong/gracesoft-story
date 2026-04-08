@@ -29,7 +29,7 @@ it('rejects unauthenticated sync requests', function () {
 
     $response = $this->post('/sync/github/refresh');
 
-    $response->assertStatus(401);
+    $response->assertRedirect('/login');
 
     Bus::assertNotDispatched(SyncRepositoriesJob::class);
 });

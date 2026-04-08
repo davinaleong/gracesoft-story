@@ -67,7 +67,7 @@ it('requires authentication for story timeline', function () {
 
     $response = $this->get('/story/'.$repository->id);
 
-    $response->assertStatus(401);
+    $response->assertRedirect('/login');
 });
 
 it('filters timeline by author label and date range', function () {
