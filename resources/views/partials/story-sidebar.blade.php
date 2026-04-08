@@ -13,49 +13,49 @@
         </div>
     </div>
 
-    <nav class="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-1 lg:gap-1">
-        <a href="/" class="gs-interactive flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm {{ $activeNav === 'connect' ? 'bg-sky-50 font-medium text-sky-700' : 'text-gray-700 hover:text-gray-900' }}">
+    <nav class="mt-4 grid grid-cols-1 gap-2 lg:gap-1">
+        <a href="/" class="gs-interactive flex items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm {{ $activeNav === 'connect' ? 'bg-sky-50 font-medium text-sky-700' : 'text-gray-700 hover:text-gray-900' }}">
             <x-lucide-icon name="plus" class="h-4 w-4 text-sky-600" />
             Connect
         </a>
 
         @if ($isTimelineDisabled)
-            <span class="flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-400">
+            <span class="flex items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm text-gray-400">
                 <x-lucide-icon name="book-open" class="h-4 w-4" />
                 Timeline
             </span>
         @else
-            <a href="{{ route('story.timeline', $currentRepository ?? $repoItems->first()) }}" class="gs-interactive flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm {{ in_array($activeNav, ['timeline', 'chapter'], true) ? 'bg-sky-50 font-medium text-sky-700' : 'text-gray-700 hover:text-gray-900' }}">
+            <a href="{{ route('story.timeline', $currentRepository ?? $repoItems->first()) }}" class="gs-interactive flex items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm {{ in_array($activeNav, ['timeline', 'chapter'], true) ? 'bg-sky-50 font-medium text-sky-700' : 'text-gray-700 hover:text-gray-900' }}">
                 <x-lucide-icon name="book-open" class="h-4 w-4" />
                 Timeline
             </a>
         @endif
 
         @auth
-            <a href="{{ route('labels.manage') }}" class="col-span-2 flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm lg:col-span-1 {{ $activeNav === 'labels' ? 'bg-sky-50 font-medium text-sky-700' : 'text-gray-700 hover:text-gray-900' }}">
+            <a href="{{ route('labels.manage') }}" class="flex items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm {{ $activeNav === 'labels' ? 'bg-sky-50 font-medium text-sky-700' : 'text-gray-700 hover:text-gray-900' }}">
                 <x-lucide-icon name="tag" class="h-4 w-4" />
                 Labels
             </a>
 
-            <a href="{{ route('insights.index') }}" class="col-span-2 flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm lg:col-span-1 {{ $activeNav === 'insights' ? 'bg-sky-50 font-medium text-sky-700' : 'text-gray-700 hover:text-gray-900' }}">
+            <a href="{{ route('insights.index') }}" class="flex items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm {{ $activeNav === 'insights' ? 'bg-sky-50 font-medium text-sky-700' : 'text-gray-700 hover:text-gray-900' }}">
                 <x-lucide-icon name="bar-chart" class="h-4 w-4" />
                 Insights
             </a>
 
-            <a href="{{ route('settings.index') }}" class="col-span-2 flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm lg:col-span-1 {{ $activeNav === 'settings' ? 'bg-sky-50 font-medium text-sky-700' : 'text-gray-700 hover:text-gray-900' }}">
+            <a href="{{ route('settings.index') }}" class="flex items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm {{ $activeNav === 'settings' ? 'bg-sky-50 font-medium text-sky-700' : 'text-gray-700 hover:text-gray-900' }}">
                 <x-lucide-icon name="settings" class="h-4 w-4" />
                 Settings
             </a>
         @else
-            <span class="col-span-2 flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-400 lg:col-span-1">
+            <span class="flex items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm text-gray-400">
                 <x-lucide-icon name="tag" class="h-4 w-4" />
                 Labels
             </span>
-            <span class="col-span-2 flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-400 lg:col-span-1">
+            <span class="flex items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm text-gray-400">
                 <x-lucide-icon name="bar-chart" class="h-4 w-4" />
                 Insights
             </span>
-            <span class="col-span-2 flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-400 lg:col-span-1">
+            <span class="flex items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm text-gray-400">
                 <x-lucide-icon name="settings" class="h-4 w-4" />
                 Settings
             </span>

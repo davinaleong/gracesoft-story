@@ -36,6 +36,30 @@
             </button>
         </div>
 
+        <section class="mt-6 rounded-xl border border-gray-200 bg-white p-4">
+            <p class="text-xs font-semibold uppercase tracking-wider text-gray-500">GitHub Account</p>
+            @auth
+                <div class="mt-3 flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                        <p class="text-sm font-semibold text-gray-900">{{ $hasGitHubAccount ? 'Connected to GitHub' : 'Not connected yet' }}</p>
+                        <p class="text-xs text-gray-500">{{ $hasGitHubAccount ? 'Your repositories can sync into chapters.' : 'Connect to start syncing repositories and chapters.' }}</p>
+                    </div>
+
+                    @if ($hasGitHubAccount)
+                        <form method="POST" action="{{ route('auth.github.disconnect') }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" data-loading-text="Disconnecting..." class="inline-flex items-center rounded-lg border border-rose-200 px-4 py-2 text-sm font-medium text-rose-700 hover:bg-rose-50">Disconnect GitHub</button>
+                        </form>
+                    @else
+                        <a href="{{ route('auth.github.redirect') }}" data-loading-text="Connecting..." class="inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">Connect GitHub</a>
+                    @endif
+                </div>
+            @else
+                <p class="mt-3 text-sm text-gray-600">Sign in to connect your GitHub account.</p>
+            @endauth
+        </section>
+
         @if ($hasGitHubAccount && $repositories->isNotEmpty())
             <div class="mt-6 rounded-xl border border-gray-200 bg-gray-50 p-4">
                 <p class="text-sm font-medium text-gray-900">GitHub connected</p>

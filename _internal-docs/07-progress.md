@@ -1,5 +1,17 @@
 # GraceSoft Story Progress Log
 
+## 2026-04-08 - Milestone: Sidebar Alignment + GitHub Connect UI Refresh
+
+### Completed in this iteration
+- Updated sidebar navigation alignment to left-aligned item layout across all nav states.
+- Added dedicated GitHub account connection section on the connect page with explicit connect/disconnect controls.
+- Improved authenticated connection state messaging (`Connected to GitHub` / `Not connected yet`) with action-oriented CTAs.
+- Added feature tests for welcome page GitHub connect/disconnect UI states.
+- Closed the two open tasks in `_internal-docs/50-todo.md`.
+
+### Validation snapshot
+- Focused test run includes new welcome connect UI test coverage.
+
 ## 2026-04-08 - Milestone: Chapter Changes Section (Final Checklist Closure)
 
 ### Completed in this iteration
