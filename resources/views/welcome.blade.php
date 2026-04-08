@@ -17,22 +17,26 @@
         <div class="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
             @auth
                 <a href="{{ route('auth.github.redirect') }}" class="gs-interactive rounded-xl border border-sky-200 bg-sky-50 px-4 py-4 shadow-sm hover:border-sky-300 hover:bg-sky-100">
+                    <x-lucide-icon name="github" class="h-5 w-5 text-sky-700" />
                     <p class="text-sm font-semibold text-sky-800">GitHub</p>
                     <p class="mt-1 text-xs text-sky-700">Connect now</p>
                 </a>
             @else
                 <div class="rounded-xl border border-gray-200 bg-gray-50 px-4 py-4 text-sm text-gray-500">
+                    <x-lucide-icon name="github" class="h-5 w-5 text-gray-500" />
                     GitHub
                     <p class="mt-1 text-xs">Sign in first to connect.</p>
                 </div>
             @endauth
 
             <button type="button" disabled class="cursor-not-allowed rounded-xl border border-gray-200 bg-white px-4 py-4 text-left text-sm text-gray-400">
+                <x-lucide-icon name="git-branch" class="h-5 w-5 text-gray-400" />
                 GitLab
                 <p class="mt-1 text-xs">Coming soon</p>
             </button>
 
             <button type="button" disabled class="cursor-not-allowed rounded-xl border border-gray-200 bg-white px-4 py-4 text-left text-sm text-gray-400">
+                <x-lucide-icon name="git-branch" class="h-5 w-5 text-gray-400" />
                 Bitbucket
                 <p class="mt-1 text-xs">Coming soon</p>
             </button>
@@ -52,9 +56,18 @@
             <p class="text-xs font-semibold uppercase tracking-wider text-gray-500">Connection Status</p>
             <h2 class="mt-2 text-lg font-semibold text-gray-900">Provider Setup</h2>
             <ul class="mt-4 space-y-3 text-sm text-gray-600">
-                <li class="rounded-md bg-gray-50 px-3 py-2">GitHub: {{ $hasGitHubAccount ? 'Connected' : 'Not connected' }}</li>
-                <li class="rounded-md bg-gray-50 px-3 py-2">GitLab: Coming soon</li>
-                <li class="rounded-md bg-gray-50 px-3 py-2">Bitbucket: Coming soon</li>
+                <li class="flex items-center gap-2 rounded-md bg-gray-50 px-3 py-2">
+                    <x-lucide-icon name="github" class="h-4 w-4 text-gray-500" />
+                    GitHub: {{ $hasGitHubAccount ? 'Connected' : 'Not connected' }}
+                </li>
+                <li class="flex items-center gap-2 rounded-md bg-gray-50 px-3 py-2">
+                    <x-lucide-icon name="git-branch" class="h-4 w-4 text-gray-400" />
+                    GitLab: Coming soon
+                </li>
+                <li class="flex items-center gap-2 rounded-md bg-gray-50 px-3 py-2">
+                    <x-lucide-icon name="git-branch" class="h-4 w-4 text-gray-400" />
+                    Bitbucket: Coming soon
+                </li>
             </ul>
         </div>
     </x-slot:inspector>

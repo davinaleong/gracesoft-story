@@ -107,7 +107,7 @@
 ## UI Elements
 
 * [x] OAuth button (primary CTA)
-* [ ] Provider logos
+* [x] Provider logos
 * [x] Short explanation text
 
 ---

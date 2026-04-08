@@ -1,5 +1,20 @@
 # GraceSoft Story Progress Log
 
+## 2026-04-08 - Milestone: Lucide Icon Pass (Navigation + Providers)
+
+### Completed in this iteration
+- Added reusable `lucide-icon` Blade component for centralized icon rendering.
+- Replaced symbol-based navigation markers in sidebar with Lucide-style icons (`plus`, `book-open`, `lock`, `settings`).
+- Added provider iconography to connect cards and provider setup inspector list (`github`, `git-branch`).
+- Kept icon integration component-driven to avoid repeated inline SVG blocks and simplify future icon updates.
+
+### Current architecture status
+- Sidebar and provider visuals now align with the updated iPhone Notes + Lucide direction.
+- Icon usage is now reusable and consistent across pages that use the shared shell/partials.
+
+### Validation snapshot
+- IDE diagnostics: no errors in touched Blade files.
+
 ## 2026-04-08 - Milestone: iPhone Notes-Inspired UI Refactor (Reusable Shell + Mobile-First)
 
 ### Completed in this iteration
