@@ -1,5 +1,22 @@
 # GraceSoft Story Progress Log
 
+## 2026-04-08 - Milestone: Auth UI and Flow Implementation
+
+### Completed in this iteration
+- Implemented full auth page set with Notes-inspired UI: login, register, forgot password, reset password, verify email, and confirm password.
+- Added reusable `auth-shell` layout component for consistent auth page styling and feedback banners.
+- Wired complete route-based auth flow in `routes/web.php` for:
+	- register/login/logout
+	- password reset request and reset submission
+	- email verification notice, resend, and signed verify callback
+	- password confirmation
+- Enabled `MustVerifyEmail` on the `User` model so verification flow is active.
+- Added guest CTA links on welcome page to discover auth entry points.
+- Added feature test coverage for auth pages and key auth flow actions.
+
+### Validation snapshot
+- Focused test run: 11 passed, 45 assertions (`AuthPagesTest`, `GitHubOAuthControllerTest`, `WelcomeConnectUiTest`).
+
 ## 2026-04-08 - Milestone: Sidebar Alignment + GitHub Connect UI Refresh
 
 ### Completed in this iteration

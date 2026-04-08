@@ -7,8 +7,15 @@ use App\Http\Controllers\StoryController;
 use App\Http\Controllers\CommitLabelController;
 use App\Http\Controllers\SyncController;
 use App\Http\Controllers\WorkspaceController;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\Rules;
 
 Route::get('/', function (Request $request) {
     $user = $request->user();
@@ -81,3 +88,145 @@ Route::get('/insights', [WorkspaceController::class, 'insights'])
 
 Route::get('/settings', [WorkspaceController::class, 'settings'])
     ->name('settings.index');
+
+Route::middleware('guest')->group(function (): void {
+    Route::get('/register', function () {
+        return view('auth.register');
+    })->name('register');
+
+    Route::post('/register', function (Request $request): RedirectResponse {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        $user = \App\Models\User::query()->create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => $validated['password'],
+        ]);
+
+        event(new Registered($user));
+
+        Auth::login($user);
+
+        return redirect()->route('verification.notice');
+    });
+
+    Route::get('/login', function () {
+        return view('auth.login');
+    })->name('login');
+
+    Route::post('/login', function (Request $request): RedirectResponse {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
+        ]);
+
+        $remember = $request->boolean('remember');
+
+        if (! Auth::attempt($credentials, $remember)) {
+            return back()
+                ->withErrors(['email' => 'The provided credentials do not match our records.'])
+                ->withInput($request->only('email'));
+        }
+
+        $request->session()->regenerate();
+
+        return redirect()->intended('/');
+    });
+
+    Route::get('/forgot-password', function () {
+        return view('auth.forgot-password');
+    })->name('password.request');
+
+    Route::post('/forgot-password', function (Request $request): RedirectResponse {
+        $request->validate([
+            'email' => ['required', 'email'],
+        ]);
+
+        $status = Password::sendResetLink($request->only('email'));
+
+        if ($status === Password::RESET_LINK_SENT) {
+            return back()->with('status', __($status));
+        }
+
+        return back()->withErrors(['email' => __($status)]);
+    })->name('password.email');
+
+    Route::get('/reset-password/{token}', function (Request $request, string $token) {
+        return view('auth.reset-password', ['request' => $request, 'token' => $token]);
+    })->name('password.reset');
+
+    Route::post('/reset-password', function (Request $request): RedirectResponse {
+        $request->validate([
+            'token' => ['required'],
+            'email' => ['required', 'email'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, string $password): void {
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                    'remember_token' => \Illuminate\Support\Str::random(60),
+                ])->save();
+            },
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+            return redirect()->route('login')->with('status', __($status));
+        }
+
+        return back()->withErrors(['email' => __($status)]);
+    })->name('password.store');
+});
+
+Route::middleware('auth')->group(function (): void {
+    Route::get('/verify-email', function () {
+        return view('auth.verify-email');
+    })->name('verification.notice');
+
+    Route::get('/verify-email/{id}/{hash}', function (EmailVerificationRequest $request): RedirectResponse {
+        $request->fulfill();
+
+        return redirect('/')->with('status', 'Email verified successfully.');
+    })->middleware(['signed'])->name('verification.verify');
+
+    Route::post('/email/verification-notification', function (Request $request): RedirectResponse {
+        $request->user()?->sendEmailVerificationNotification();
+
+        return back()->with('status', 'Verification link sent.');
+    })->middleware('throttle:6,1')->name('verification.send');
+
+    Route::get('/confirm-password', function () {
+        return view('auth.confirm-password');
+    })->name('password.confirm');
+
+    Route::post('/confirm-password', function (Request $request): RedirectResponse {
+        $request->validate([
+            'password' => ['required', 'string'],
+        ]);
+
+        $user = $request->user();
+
+        if (! $user || ! Hash::check($request->string('password')->toString(), $user->password)) {
+            return back()->withErrors(['password' => 'The password is incorrect.']);
+        }
+
+        $request->session()->put('auth.password_confirmed_at', time());
+
+        return redirect()->intended('/');
+    });
+
+    Route::post('/logout', function (Request $request): RedirectResponse {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    })->name('logout');
+});

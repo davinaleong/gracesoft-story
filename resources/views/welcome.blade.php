@@ -8,6 +8,13 @@
         <h1 class="mt-2 text-2xl font-semibold text-gray-900 sm:text-3xl">Connect your repository</h1>
         <p class="mt-2 max-w-2xl text-sm text-gray-600">Start your story by connecting a repository. Once connected, each commit becomes a chapter you can explore and tag.</p>
 
+        @guest
+            <div class="mt-4 flex flex-wrap items-center gap-2">
+                <a href="{{ route('login') }}" class="inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Sign in</a>
+                <a href="{{ route('register') }}" class="inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">Create account</a>
+            </div>
+        @endguest
+
         <div class="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
             @auth
                 <a href="{{ route('auth.github.redirect') }}" data-loading-text="Connecting..." class="gs-interactive rounded-xl border border-sky-200 bg-sky-50 px-4 py-4 shadow-sm hover:border-sky-300 hover:bg-sky-100">
